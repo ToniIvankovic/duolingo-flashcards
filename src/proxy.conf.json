@@ -1,0 +1,10 @@
+{
+    "/api": {
+        "target": "https://www.duolingo.com",
+        "secure": true,
+        "changeOrigin": true,
+        "loglevel": "debug",
+        "pathRewrite": {"^/api" : ""},
+        "cookieDomainRewrite": "localhost"
+    }
+}

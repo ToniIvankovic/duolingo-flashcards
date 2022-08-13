@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+    <label for="login">Username:</label>
+    <input type="text" id="login" placeholder="Username" formControlName="login">
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Password" formControlName="password">
+    <button (click)="onLoginClick($event)">LOGIN</button>
+</form>
+
+<p *ngIf="loggedIn">{{jwtToken}}</p>
