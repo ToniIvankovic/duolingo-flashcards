@@ -1,0 +1,33 @@
+:host{
+    background-color: rgb(41, 218, 25);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+}
+.container{
+    width: 25%;
+    min-width: 250px;
+    height: 30%;
+    min-height: 300px;
+    text-align: center;
+    padding: 2em;
+    border: 1px dotted black;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.title{
+    font-size: xx-large;
+    display: block;
+    margin-top: 5em;
+    margin-bottom: 3em;
+}
+
+.description{
+    margin-block: 3em;
+}

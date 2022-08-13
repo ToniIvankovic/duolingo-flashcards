@@ -26,15 +26,9 @@ const routes: Routes = [
         ],
     },
     {
-        path: '',
+        path: 'login',
         component: AuthLayoutComponent,
         canActivate: [AnonymousGuard],
-        children: [
-            {
-                path: 'login',
-                component: LoginComponent,
-            },
-        ],
     },
     {
         path: '**',

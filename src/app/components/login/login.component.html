@@ -1,7 +1,12 @@
 <form [formGroup]="form">
-    <label for="login">Username:</label>
-    <input type="text" id="login" placeholder="Username" formControlName="login">
-    <label for="password">Password:</label>
-    <input type="password" id="password" placeholder="Password" formControlName="password">
-    <button (click)="onLoginClick($event)">LOGIN</button>
+    <mat-form-field>
+        <input matInput type="text" id="login" placeholder="Username" formControlName="login">
+        <mat-hint *ngIf="form.controls['login'].invalid">Incorrect username</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="password" id="password" placeholder="Password" formControlName="password">
+        <mat-hint *ngIf="form.controls['password'].invalid">Incorrect password</mat-hint>
+    </mat-form-field>
+    <button *ngIf="!loading" mat-raised-button color="primary" (click)="onLoginClick($event)">LOGIN</button>
+    <div *ngIf="loading" class="loader"></div>
 </form>

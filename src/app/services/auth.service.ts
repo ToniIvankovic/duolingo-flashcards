@@ -11,7 +11,7 @@ export class AuthService {
 
     constructor(private readonly http: HttpClient) {}
 
-    public login(username: string, password: string): Observable<IUser | null> {
+    public login(username: string, password: string): Observable<IUser | {failure: string, message: string}> {
         return (
             this.http.post(
                 this.loginURI,
@@ -24,13 +24,26 @@ export class AuthService {
                     responseType: 'json',
                     withCredentials: true,
                 }
-            ) as Observable<HttpResponse<{response: string, user_id: string, username: string} | null>>
+            ) as Observable<HttpResponse<{response: string, user_id: string, username: string} | {failure: string, message: string}>>
         ).pipe(
             map((response) => response.body),
             tap((body) => {
-                if(body?.response === "OK"){
+                if(body && "response" in body && body.response === "OK"){
                     document.cookie = `username=${body!.username}`;
                     document.cookie = `user_id=${body!.user_id}`;
+                }
+            }),
+            map(body => {
+                if("response" in body!){
+                    return {
+                        user_id: body!.user_id,
+                        username: body!.username
+                    } as IUser;
+                } else{
+                    return {
+                        failure: body!.failure,
+                        message: body!.message
+                    };
                 }
             })
         );

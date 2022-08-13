@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
     public loggedIn: boolean = false;
     public form: FormGroup;
+    public loading: boolean = false;
 
     constructor(private readonly authService: AuthService, private readonly router :Router) {
         this.form = new FormGroup({
@@ -24,12 +25,19 @@ export class LoginComponent implements OnInit {
 
     public onLoginClick(event: Event) {
         event.preventDefault();
-        this.authService.login(this.form.controls['login'].value, this.form.controls['password'].value).subscribe((user) => {
-            if(user){
+        this.loading = true;
+        this.authService.login(this.form.controls['login'].value, this.form.controls['password'].value).subscribe((response) => {
+            this.loading = false;
+            console.log(response)
+            if("user_id" in response){
                 this.router.navigate(['']);
-            } else{
-                this.form.controls['password'].setErrors({
+            } else if(response['failure'] === "user_does_not_exist"){
+                this.form.controls['login'].setErrors({
                     credentials: "Incorrect credentials"
+                })
+            } else if(response['failure'] === "invalid_password"){
+                this.form.controls['password'].setErrors({
+                    credentials: "Incorrect password"
                 })
             }
         });

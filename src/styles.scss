@@ -1,1 +1,192 @@
+@use '@angular/material' as mat;
 /* You can add global styles to this file, and also import other style files */
+body{
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+@include mat.core();
+
+$infinum-academy-app-primary: mat.define-palette(mat.$indigo-palette);
+$infinum-academy-app-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+$infinum-academy-app-warn: mat.define-palette(mat.$red-palette);
+
+$infinum-academy-app-theme: mat.define-light-theme(
+	(
+		color: (
+			primary: $infinum-academy-app-primary,
+			accent: $infinum-academy-app-accent,
+			warn: $infinum-academy-app-warn,
+		),
+	)
+);
+
+@include mat.all-component-themes($infinum-academy-app-theme);
+
+
+@import "@angular/material/theming";
+
+$light-purple: #8d5ce5;
+$purple: #371687;
+$dark-purple: #1b004c;
+$error: #ff2498;
+
+$typography-config: mat.define-typography-config(
+  $headline: mat.define-typography-level(40px, 52px, 700),
+  $title: mat.define-typography-level(24px, 32px, 700),
+  $subheading-2: mat.define-typography-level(18px, 24px, 700),
+  $body-1: mat.define-typography-level(16px, 20px, 400),
+  $body-2: mat.define-typography-level(16px, 20px, 700),
+  $button: mat.define-typography-level(14px, 14px, 500),
+  $caption: mat.define-typography-level(14px, 20px, 700),
+);
+
+@include mat-core($typography-config);
+
+$grey-palette: (
+  50: #fafafa,
+  100: #f5f5f5,
+  200: #eeeeee,
+  300: #e0e0e0,
+  400: #bdbdbd,
+  500: #9e9e9e,
+  600: #757575,
+  700: #616161,
+  800: #424242,
+  900: #212121,
+);
+
+$background: (
+    status-bar: black,
+    app-bar: map-get($grey-palette, 900),
+    background: green,
+    hover: rgba(green, 0.1),
+    card: rgb(160, 244, 160),
+    dialog: black,
+    disabled-button: rgba(green, 0.12),
+    raised-button: green,
+    focused-button: green,
+    selected-button: green,
+    selected-disabled-button: green,
+    disabled-button-toggle: black,
+    unselected-chip: map-get($grey-palette, 700),
+    disabled-list-option: black,
+    tooltip: map-get($grey-palette, 700),
+);
+
+$foreground: (
+  base: green,
+  divider: green,
+  dividers: green,
+  disabled: green,
+  disabled-button: rgba(green, 0.3),
+  disabled-text: green,
+  elevation: green,
+  hint-text: green,
+  secondary-text: green,
+  icon: green,
+  icons: green,
+  text: green,
+  slider-min: green,
+  slider-off: rgba(green, 0.3),
+  slider-off-active: rgba(green, 0.3),
+);
+
+$accent-color-palette: (
+  50: #ede6f5,
+  100: #d1c3e6,
+  200: #b39bd5,
+  300: #9672c5,
+  400: #8053b9,
+  500: #6a35ac,
+  600: #6130a6,
+  700: #55289e,
+  800: #4a2295,
+  900: #381687,
+  contrast: (
+    50: #000000,
+    100: #ffffff,
+    200: #ffffff,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$primary-color-palette: (
+  50: #ffffff,
+  100: #c3d4ba,
+  200: #bbd5ad,
+  300: #bcd9ad,
+  400: #a9db8e,
+  500: #90d46c,
+  600: #87d160,
+  700: #5eb62f,
+  800: #50be14,
+  900: #359401,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+  ),
+);
+
+$warn-color-palette: (
+  50: #fde4f1,
+  100: #fbbbdd,
+  200: #fb8dc6,
+  300: #fd5aae,
+  400: #ff2499,
+  500: #ff0082,
+  600: #f0007e,
+  700: #d90078,
+  800: #c30074,
+  900: #99006c,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$primary: mat-palette($primary-color-palette, 800);
+$accent: mat-palette($accent-color-palette, 900);
+$warn: mat-palette($warn-color-palette, 400);
+
+@include all-component-themes(
+  (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+    is-dark: true,
+    foreground: $foreground,
+    background: $background,
+  )
+);
