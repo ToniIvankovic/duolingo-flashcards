@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { IApiData, ILanguageData } from 'src/app/interfaces/api-data.interface';
+import {
+    IApiData,
+    ILanguage,
+    ILanguageData,
+} from 'src/app/interfaces/api-data.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { LanguageDataService } from 'src/app/services/language-data.service';
 
 @Component({
     selector: 'app-practice-all',
@@ -11,10 +16,12 @@ import { AuthService } from 'src/app/services/auth.service';
 export class PracticeAllComponent implements OnInit {
     constructor(
         private readonly http: HttpClient,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly languageDataService: LanguageDataService
     ) {}
 
-    public languageData?: ILanguageData;
+    public apiData?: IApiData;
+    public currentLanguage?: string;
     public lastLesson?: string;
 
     public loading: boolean = false;
@@ -24,20 +31,22 @@ export class PracticeAllComponent implements OnInit {
             .get<IApiData>(
                 `/api/users/${this.authService.getCurrentUser()?.username}`
             )
-            .subscribe((response) => {
-                console.log(response);
+            .subscribe((apiData) => {
                 this.loading = false;
-                let currentLanguage = response.languages.filter(
-                    (language) => language.current_learning
-                )[0];
-                this.languageData =
-                    response.language_data[currentLanguage.language];
-                let completedSkills = this.languageData.skills.filter(
-                    (skill) => skill.learned
-                );
+                this.apiData = apiData;
+                this.currentLanguage =
+                    this.languageDataService.getCurrentLearningLanguage(
+                        apiData
+                    ).language_string;
                 this.lastLesson =
-                    completedSkills[completedSkills.length - 1].title;
-                console.log(this.languageData);
+                    this.languageDataService.calculateLastCompletedSkill(
+                        apiData
+                    ).title;
             });
+    }
+
+    public onStartClick(event: Event) {
+        event.preventDefault();
+        console.log(event);
     }
 }

@@ -5,7 +5,7 @@ export interface IApiData {
     };
 }
 
-interface ILanguage {
+export interface ILanguage {
     current_learning: boolean;
     language: string;
     language_string: string;
@@ -14,10 +14,10 @@ interface ILanguage {
 
 export interface ILanguageData {
     language_string: string;
-    skills: Skill[];
+    skills: ISkill[];
 }
 
-interface Skill {
+export interface ISkill {
     dependencies: string[];
     dependencies_name: string[];
     name: string;

@@ -1,12 +1,14 @@
+@use "/src/variables.scss" as v;
 app-loader{
     display: block;
     width: 100px;
     height: 100px;
     margin: auto;
+    margin-top: 1em;
 }
 
 .container{
-    padding: 3em;
+    padding: 2em;
     font-size: large;
     display: flex;
     flex-direction: column;
@@ -16,4 +18,36 @@ app-loader{
 
 .largerText{
     font-size: x-large;
+}
+
+button{
+    background: none;
+    background-color: v.$secondary_color;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+}
+
+.startButton{
+    padding: 1.5em;
+    min-width: 150px;
+    margin-top: 1em;
+    font-size: large;
+}
+
+mat-checkbox{
+    display: block;
+}
+
+.title{
+    font-size: xx-large;
+    margin-bottom: 1em;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,12 +1,18 @@
 <div class="container">
+    <p class="title">Practice all skills</p>
     <app-loader *ngIf="loading"></app-loader>
-    <ng-container *ngIf="languageData">
+    <ng-container *ngIf="apiData">
         <p>Language:</p>
-        <p class="largerText">{{ languageData.language_string }}</p>
+        <p class="largerText">{{ currentLanguage }}</p>
+        <br />
 
         <p>Last lesson:</p>
         <p class="largerText">{{ lastLesson }}</p>
+        <br />
 
-        <button>START</button>
+        <form>
+            <mat-checkbox color="primary" id="newerPref">Preffer newer lessons?</mat-checkbox>
+            <button class="startButton" (click)="onStartClick($event)">START</button>
+        </form>
     </ng-container>
 </div>
