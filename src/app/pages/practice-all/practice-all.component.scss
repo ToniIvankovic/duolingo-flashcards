@@ -4,3 +4,16 @@ app-loader{
     height: 100px;
     margin: auto;
 }
+
+.container{
+    padding: 3em;
+    font-size: large;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.largerText{
+    font-size: x-large;
+}

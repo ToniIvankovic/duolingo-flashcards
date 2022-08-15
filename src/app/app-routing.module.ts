@@ -8,6 +8,8 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { AuthLayoutModule } from './layouts/auth-layout/auth-layout.module';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { MainLayoutModule } from './layouts/main-layout/main-layout.module';
+import { ChooseLanguageComponent } from './pages/choose-language/choose-language.component';
+import { ChooseLanguageModule } from './pages/choose-language/choose-language.module';
 import { LessonsComponent } from './pages/lessons/lessons.component';
 import { LessonsModule } from './pages/lessons/lessons.module';
 import { PracticeAllComponent } from './pages/practice-all/practice-all.component';
@@ -19,6 +21,10 @@ const routes: Routes = [
         component: MainLayoutComponent,
         canActivate: [AuthenticatedGuard],
         children: [
+            {
+                path: '',
+                component: ChooseLanguageComponent,
+            },
             {
                 path: 'practice_all',
                 component: PracticeAllComponent,
@@ -43,6 +49,7 @@ const routes: Routes = [
         AuthLayoutModule,
         PracticeAllModule,
         LessonsModule,
+        ChooseLanguageModule
     ],
     exports: [RouterModule],
 })

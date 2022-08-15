@@ -1,2 +1,12 @@
-<p>practice-all works!</p>
-<app-loader *ngIf="loading"></app-loader>
+<div class="container">
+    <app-loader *ngIf="loading"></app-loader>
+    <ng-container *ngIf="languageData">
+        <p>Language:</p>
+        <p class="largerText">{{ languageData.language_string }}</p>
+
+        <p>Last lesson:</p>
+        <p class="largerText">{{ lastLesson }}</p>
+
+        <button>START</button>
+    </ng-container>
+</div>
