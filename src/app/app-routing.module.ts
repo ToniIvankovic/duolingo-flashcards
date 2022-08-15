@@ -34,10 +34,6 @@ const routes: Routes = [
         component: AuthLayoutComponent,
         canActivate: [AnonymousGuard],
     },
-    {
-        path: '**',
-        redirectTo: '/login',
-    },
 ];
 
 @NgModule({
