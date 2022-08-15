@@ -15,16 +15,28 @@ export class NavigationComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public onLogoutClick() {
-        this.authService.logout();
-        window.location.reload();
-    }
-
-    public onPracticeAllClick() {
-        this.router.navigateByUrl('/practice_all');
-    }
-
-    public onLessonsClick() {
-        this.router.navigateByUrl('/lessons');
-    }
+    public menus = [
+        {
+            title: "PRACTICE ALL",
+            url: '/practice_all',
+            onClick: () => {
+                this.router.navigateByUrl('/practice_all');
+            },
+        },
+        {
+            title: "LESSONS",
+            url: '/lessons',
+            onClick: () => {
+                this.router.navigateByUrl('/lessons');
+            },
+        },
+        {
+            title: "LOGOUT",
+            url: '/logout',
+            onClick: () => {
+                this.authService.logout();
+                window.location.reload();
+            },
+        },
+    ];
 }

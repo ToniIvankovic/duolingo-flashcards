@@ -1,5 +1,12 @@
 <div class="flexbox">
-    <button>PRACTICE ALL</button>
-    <button>LESSONS</button>
-    <button (click)="onLogoutClick()">LOGOUT</button>
+    <a
+        class="menu"
+        *ngFor="let menu of menus"
+        [routerLink]="menu.url"
+        [routerLinkActive]="'active'"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="menu.onClick()"
+    >
+        {{ menu.title }}
+    </a>
 </div>
