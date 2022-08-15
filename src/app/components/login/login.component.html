@@ -8,5 +8,5 @@
         <mat-hint *ngIf="form.controls['password'].invalid">Incorrect password</mat-hint>
     </mat-form-field>
     <button *ngIf="!loading" mat-raised-button color="primary" (click)="onLoginClick($event)">LOGIN</button>
-    <div *ngIf="loading" class="loader"></div>
+    <app-loader *ngIf="loading"></app-loader>
 </form>

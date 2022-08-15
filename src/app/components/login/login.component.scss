@@ -8,16 +8,9 @@ mat-form-field{
     display: block;
 }
 
-.loader {
-    margin: 0 auto;
-    border: 8px solid #deffe6; /* Light grey */
-    border-top: 8px solid #008a00; /* Blue */
-    border-radius: 50%;
+app-loader{
     width: 20px;
     height: 20px;
-    animation: spin 0.7s linear infinite;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    margin: 0 auto;
+    display: block;
 }

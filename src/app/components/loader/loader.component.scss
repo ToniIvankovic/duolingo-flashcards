@@ -1,0 +1,12 @@
+.loader {
+    border: 8px solid #deffe6; /* Light grey */
+    border-top: 8px solid #008a00; /* Blue */
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
