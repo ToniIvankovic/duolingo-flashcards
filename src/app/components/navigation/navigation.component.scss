@@ -1,0 +1,26 @@
+@use "/src/variables.scss" as v;
+:host{
+    display: block;
+    background: v.$main-color-emphasized;
+    height: 100px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0 0 10px 10px;
+}
+
+.flexbox{
+    height: 100%;
+    display: flex;
+}
+button{
+    width: calc(100% / 3);
+    height: 100%;
+    background-color: v.$main-color-emphasized;
+    border: none;
+    &:hover{
+        background-color: v.$secondary-color;
+    }
+    cursor: pointer;
+    border-radius: 0 0 10px 10px;
+    font-size: large;
+}

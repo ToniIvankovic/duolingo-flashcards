@@ -1,0 +1,7 @@
+@use "/src/variables.scss" as v;
+:host{
+    background-color: v.$main-color;
+    display: block;
+    height: 100%;
+    width: 100%;
+}

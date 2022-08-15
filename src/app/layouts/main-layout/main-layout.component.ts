@@ -8,15 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
     styleUrls: ['./main-layout.component.scss'],
 })
 export class MainLayoutComponent implements OnInit {
-    constructor(
-        private readonly authService: AuthService,
-        private readonly router: Router
-    ) {}
+    constructor() {}
 
     ngOnInit(): void {}
-
-    public onLogoutClick() {
-        this.authService.logout();
-        window.location.reload();
-    }
 }

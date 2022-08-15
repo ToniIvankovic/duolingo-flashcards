@@ -15,10 +15,10 @@ const routes: Routes = [
         component: MainLayoutComponent,
         canActivate: [AuthenticatedGuard],
         children: [
-            {
-                path: '',
-                component: CardsComponent,
-            },
+            // {
+            //     path: '',
+            //     component: CardsComponent,
+            // },
             // {
             //     path: '**',
             //     redirectTo: '',
