@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { combineLatestWith, map, Observable, tap } from 'rxjs';
 import {
     IApiData,
     ILanguage,
@@ -20,29 +21,24 @@ export class PracticeAllComponent implements OnInit {
         private readonly languageDataService: LanguageDataService
     ) {}
 
-    public apiData?: IApiData;
-    public currentLanguage?: string;
-    public lastLesson?: string;
+    public currentLanguage$?: Observable<string>;
+    public lastLesson$?: Observable<string>;
 
     public loading: boolean = false;
     ngOnInit(): void {
         this.loading = true;
-        this.http
-            .get<IApiData>(
-                `/api/users/${this.authService.getCurrentUser()?.username}`
+        this.currentLanguage$ = this.languageDataService
+            .getCurrentLearningLanguage()
+            .pipe(map((language) => language.language_string));
+        this.lastLesson$ = this.languageDataService
+            .getLastCompletedSkill()
+            .pipe(map((skill) => skill.title));
+        this.currentLanguage$
+            .pipe(
+                combineLatestWith(this.lastLesson$),
+                tap(() => (this.loading = false))
             )
-            .subscribe((apiData) => {
-                this.loading = false;
-                this.apiData = apiData;
-                this.currentLanguage =
-                    this.languageDataService.getCurrentLearningLanguage(
-                        apiData
-                    ).language_string;
-                this.lastLesson =
-                    this.languageDataService.calculateLastCompletedSkill(
-                        apiData
-                    ).title;
-            });
+            .subscribe();
     }
 
     public onStartClick(event: Event) {

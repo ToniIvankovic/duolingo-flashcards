@@ -1,22 +1,52 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
 import { IApiData, ILanguage, ISkill } from '../interfaces/api-data.interface';
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LanguageDataService {
-    constructor() {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly authService: AuthService
+    ) {
+        this.fetchApiData().subscribe();
+    }
 
-    public calculateLastCompletedSkill(apiData: IApiData): ISkill {
-        let languageData =
-            apiData.language_data[
-                this.getCurrentLearningLanguage(apiData).language
-            ];
-        // let completedSkills = languageData.skills.filter(
-        //     (skill) => skill.learned
-        // );
-        const sortedSkills = this.generateSkillsInOrder(languageData.skills, true);
-        return sortedSkills[sortedSkills.length - 1];
+    private apiData$ = new ReplaySubject<IApiData>(1);
+    
+    private fetchApiData(): Observable<IApiData> {
+        return this.http
+            .get<IApiData>(
+                `/api/users/${this.authService.getCurrentUser()?.username}`
+            )
+            .pipe(
+                tap((apiData) => {
+                    console.log(apiData);
+                    this.apiData$.next(apiData);
+                })
+            );
+    }
+
+    public getLastCompletedSkill(): Observable<ISkill> {
+        return this.apiData$.pipe(
+            switchMap((apiData) => {
+                return this.getCurrentLearningLanguage().pipe(
+                    map((currentLanguage) => {
+                        return apiData.language_data[currentLanguage.language];
+                    })
+                );
+            }),
+            map((languageData) => {
+                const sortedSkills = this.generateSkillsInOrder(
+                    languageData.skills,
+                    true
+                );
+                return sortedSkills[sortedSkills.length - 1];
+            })
+        );
     }
 
     private generateSkillsInOrder(
@@ -46,9 +76,13 @@ export class LanguageDataService {
         return sortedSkills;
     }
 
-    public getCurrentLearningLanguage(apiData: IApiData): ILanguage {
-        return apiData.languages.filter(
-            (language) => language.current_learning
-        )[0];
+    public getCurrentLearningLanguage(): Observable<ILanguage> {
+        return this.apiData$.pipe(
+            map((apiData) => {
+                return apiData.languages.filter(
+                    (language) => language.current_learning
+                )[0];
+            })
+        );
     }
 }
