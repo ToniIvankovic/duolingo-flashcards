@@ -121,7 +121,7 @@ export class LanguageDataService {
                         ...skill.words
                             .filter(
                                 (word) =>
-                                    !word.includes(
+                                    !connectStringToLowerCase(word).includes(
                                         connectStringToLowerCase(skill.name)
                                     )
                             )
@@ -192,7 +192,9 @@ export class LanguageDataService {
     }
 
     public findTranslations(foreignWords: IRawWord[]): Observable<IWord[]> {
-        const stringArray = `[${foreignWords.map((iWord) => `"${iWord.word}"`)}]`;
+        const stringArray = `[${foreignWords.map(
+            (iWord) => `"${iWord.word}"`
+        )}]`;
         return this.http
             .get<{ [foreignWord: string]: string[] }>(
                 '/dictionary-api/es/en?tokens=' + stringArray

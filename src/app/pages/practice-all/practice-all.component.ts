@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { combineLatestWith, map, Observable, tap } from 'rxjs';
 import { GameMode } from 'src/app/enums/game-modes.enum';
 import {
@@ -18,10 +19,9 @@ import { LanguageDataService } from 'src/app/services/language-data.service';
 })
 export class PracticeAllComponent implements OnInit {
     constructor(
-        private readonly http: HttpClient,
-        private readonly authService: AuthService,
         private readonly languageDataService: LanguageDataService,
-        private readonly cardsGameService: CardsGameService
+        private readonly cardsGameService: CardsGameService,
+        private readonly router : Router
     ) {}
 
     public currentLanguage$?: Observable<string>;
@@ -37,24 +37,17 @@ export class PracticeAllComponent implements OnInit {
             .getLastCompletedSkill()
             .pipe(map((skill) => skill.title));
         this.currentLanguage$
-            .pipe(
-                combineLatestWith(this.lastLesson$),
-                tap(() => (this.loading = false))
-            )
-            .subscribe();
+            .pipe(combineLatestWith(this.lastLesson$))
+            .subscribe(() => (this.loading = false));
     }
 
     public onStartClick(event: Event) {
         let amount = 10;
         event.preventDefault();
-        this.languageDataService
-            .pickPracticeAllWords(true, amount)
-            .subscribe((words) => {
-                this.cardsGameService.startSession(
-                    GameMode.PRACTICE_ALL,
-                    amount,
-                    true
-                );
+        this.cardsGameService
+            .prepareSession(GameMode.PRACTICE_ALL, amount, true)
+            .subscribe(() => {
+                this.router.navigateByUrl('/game');
             });
     }
 }

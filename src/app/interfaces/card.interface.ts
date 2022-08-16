@@ -6,7 +6,7 @@ export interface ISession {
 
 export interface ICard {
     word: IWord;
-    seen: boolean;
+    seen?: boolean;
     correct?: boolean;
 }
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CardsComponent } from './components/cards/cards.component';
-import { LoginComponent } from './components/login/login.component';
+import { GameComponent } from './components/game/game.component';
+import { GameModule } from './components/game/game.module';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
@@ -30,6 +30,10 @@ const routes: Routes = [
                 component: PracticeAllComponent,
             },
             {
+                path: 'game',
+                component: GameComponent,
+            },
+            {
                 path: 'lessons',
                 component: LessonsComponent,
             },
@@ -40,6 +44,10 @@ const routes: Routes = [
         component: AuthLayoutComponent,
         canActivate: [AnonymousGuard],
     },
+    {
+        path: '**',
+        redirectTo: '/',
+    },
 ];
 
 @NgModule({
@@ -49,7 +57,8 @@ const routes: Routes = [
         AuthLayoutModule,
         PracticeAllModule,
         LessonsModule,
-        ChooseLanguageModule
+        ChooseLanguageModule,
+        GameModule,
     ],
     exports: [RouterModule],
 })
