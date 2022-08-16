@@ -44,7 +44,7 @@ export class PracticeAllComponent implements OnInit {
     public onStartClick(event: Event) {
         event.preventDefault();
         this.languageDataService
-            .getPracticeAllWords(true)
+            .pickPracticeAllWords(true, 10)
             .subscribe(console.log);
     }
 }

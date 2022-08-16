@@ -96,15 +96,63 @@ export class LanguageDataService {
         );
     }
 
-    public getPracticeAllWords(prefferNewer: boolean): Observable<string[]> {
+    private getAllWords(): Observable<string[]> {
+        function connectStringToLowerCase(str: string): string {
+            return str.toLowerCase().split(' ').join('');
+        }
+        
         let skillsInOrder$ = this.getCurrentLanguageData().pipe(
             map((langData) => this.generateSkillsInOrder(langData.skills, true))
         );
         return skillsInOrder$.pipe(
             map((skills) => {
                 const words: string[] = [];
-                skills.forEach((skill) => words.push(...skill.words));
+                skills.forEach((skill) =>
+                    words.push(
+                        ...skill.words.filter(
+                            (word) =>
+                                !word.includes(
+                                    connectStringToLowerCase(skill.name)
+                                )
+                        )
+                    )
+                );
                 return words;
+            })
+        );
+    }
+
+    public pickPracticeAllWords(
+        prefferNewer: boolean,
+        amount: number
+    ): Observable<string[]> {
+        return this.getAllWords().pipe(
+            map((allWords) => {
+                allWords.reverse();
+                const chosenWords = [];
+                let index;
+                for (let i = 0; i < amount; i++) {
+                    if (!prefferNewer) {
+                        index = Math.floor(Math.random() * allWords.length);
+                    } else {
+                        const newnessThreshold: number = 100;
+                        const newWordsProbability: number = 0.8;
+                        if (Math.random() > newWordsProbability) {
+                            index = Math.floor(Math.random() * allWords.length);
+                        } else {
+                            index = Math.floor(
+                                Math.random() * newnessThreshold
+                            );
+                        }
+                    }
+                    const chosenWord = allWords[index];
+                    if (!(chosenWord in chosenWords)) {
+                        chosenWords.push(chosenWord);
+                    } else {
+                        i--;
+                    }
+                }
+                return chosenWords;
             })
         );
     }
