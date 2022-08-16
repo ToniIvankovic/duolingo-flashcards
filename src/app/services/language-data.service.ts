@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
-import { IApiData, ILanguage, ISkill } from '../interfaces/api-data.interface';
+import {
+    IApiData,
+    ILanguage,
+    ILanguageData,
+    ISkill,
+} from '../interfaces/api-data.interface';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -16,7 +21,7 @@ export class LanguageDataService {
     }
 
     private apiData$ = new ReplaySubject<IApiData>(1);
-    
+
     private fetchApiData(): Observable<IApiData> {
         return this.http
             .get<IApiData>(
@@ -31,6 +36,18 @@ export class LanguageDataService {
     }
 
     public getLastCompletedSkill(): Observable<ISkill> {
+        return this.getCurrentLanguageData().pipe(
+            map((languageData) => {
+                const sortedSkills = this.generateSkillsInOrder(
+                    languageData.skills,
+                    true
+                );
+                return sortedSkills[sortedSkills.length - 1];
+            })
+        );
+    }
+
+    private getCurrentLanguageData(): Observable<ILanguageData> {
         return this.apiData$.pipe(
             switchMap((apiData) => {
                 return this.getCurrentLearningLanguage().pipe(
@@ -38,13 +55,6 @@ export class LanguageDataService {
                         return apiData.language_data[currentLanguage.language];
                     })
                 );
-            }),
-            map((languageData) => {
-                const sortedSkills = this.generateSkillsInOrder(
-                    languageData.skills,
-                    true
-                );
-                return sortedSkills[sortedSkills.length - 1];
             })
         );
     }
@@ -82,6 +92,19 @@ export class LanguageDataService {
                 return apiData.languages.filter(
                     (language) => language.current_learning
                 )[0];
+            })
+        );
+    }
+
+    public getPracticeAllWords(prefferNewer: boolean): Observable<string[]> {
+        let skillsInOrder$ = this.getCurrentLanguageData().pipe(
+            map((langData) => this.generateSkillsInOrder(langData.skills, true))
+        );
+        return skillsInOrder$.pipe(
+            map((skills) => {
+                const words: string[] = [];
+                skills.forEach((skill) => words.push(...skill.words));
+                return words;
             })
         );
     }
