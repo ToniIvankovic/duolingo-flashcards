@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { combineLatestWith, map, Observable, tap } from 'rxjs';
+import { GameMode } from 'src/app/enums/game-modes.enum';
 import {
     IApiData,
     ILanguage,
     ILanguageData,
 } from 'src/app/interfaces/api-data.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { CardsGameService } from 'src/app/services/cards-game.service';
 import { LanguageDataService } from 'src/app/services/language-data.service';
 
 @Component({
@@ -18,7 +20,8 @@ export class PracticeAllComponent implements OnInit {
     constructor(
         private readonly http: HttpClient,
         private readonly authService: AuthService,
-        private readonly languageDataService: LanguageDataService
+        private readonly languageDataService: LanguageDataService,
+        private readonly cardsGameService: CardsGameService
     ) {}
 
     public currentLanguage$?: Observable<string>;
@@ -42,9 +45,16 @@ export class PracticeAllComponent implements OnInit {
     }
 
     public onStartClick(event: Event) {
+        let amount = 10;
         event.preventDefault();
         this.languageDataService
-            .pickPracticeAllWords(true, 10)
-            .subscribe(console.log);
+            .pickPracticeAllWords(true, amount)
+            .subscribe((words) => {
+                this.cardsGameService.startSession(
+                    GameMode.PRACTICE_ALL,
+                    amount,
+                    true
+                );
+            });
     }
 }

@@ -1,12 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of, ReplaySubject, switchMap, tap } from 'rxjs';
+import {
+    EMPTY,
+    map,
+    Observable,
+    of,
+    ReplaySubject,
+    switchMap,
+    tap,
+} from 'rxjs';
 import {
     IApiData,
     ILanguage,
     ILanguageData,
     ISkill,
 } from '../interfaces/api-data.interface';
+import { IRawWord, IWord } from '../interfaces/card.interface';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -96,25 +105,32 @@ export class LanguageDataService {
         );
     }
 
-    private getAllWords(): Observable<string[]> {
+    private getAllWords(): Observable<IRawWord[]> {
         function connectStringToLowerCase(str: string): string {
             return str.toLowerCase().split(' ').join('');
         }
-        
+
         let skillsInOrder$ = this.getCurrentLanguageData().pipe(
             map((langData) => this.generateSkillsInOrder(langData.skills, true))
         );
         return skillsInOrder$.pipe(
             map((skills) => {
-                const words: string[] = [];
+                const words: IRawWord[] = [];
                 skills.forEach((skill) =>
                     words.push(
-                        ...skill.words.filter(
-                            (word) =>
-                                !word.includes(
-                                    connectStringToLowerCase(skill.name)
-                                )
-                        )
+                        ...skill.words
+                            .filter(
+                                (word) =>
+                                    !word.includes(
+                                        connectStringToLowerCase(skill.name)
+                                    )
+                            )
+                            .map((word) => {
+                                return {
+                                    word: word,
+                                    skill: skill,
+                                };
+                            })
                     )
                 );
                 return words;
@@ -125,13 +141,14 @@ export class LanguageDataService {
     public pickPracticeAllWords(
         prefferNewer: boolean,
         amount: number
-    ): Observable<string[]> {
+    ): Observable<IRawWord[]> {
         return this.getAllWords().pipe(
             map((allWords) => {
                 allWords.reverse();
                 const chosenWords = [];
                 let index;
                 for (let i = 0; i < amount; i++) {
+                    // Choosing the index
                     if (!prefferNewer) {
                         index = Math.floor(Math.random() * allWords.length);
                     } else {
@@ -146,7 +163,7 @@ export class LanguageDataService {
                         }
                     }
                     const chosenWord = allWords[index];
-                    if (!(chosenWord in chosenWords)) {
+                    if (!((chosenWord as any) in chosenWords)) {
                         chosenWords.push(chosenWord);
                     } else {
                         i--;
@@ -155,5 +172,44 @@ export class LanguageDataService {
                 return chosenWords;
             })
         );
+    }
+
+    public findTranslation(foreignWord: IRawWord): Observable<IWord> {
+        return this.http
+            .get<{ [foreignWord: string]: string[] }>(
+                '/dictionary-api/es/en?' + foreignWord.word
+            )
+            .pipe(
+                map((apiTranslations) => {
+                    let translations = apiTranslations[foreignWord.word];
+                    return {
+                        word: foreignWord.word,
+                        translations: translations,
+                        skill: foreignWord.skill,
+                    };
+                })
+            );
+    }
+
+    public findTranslations(foreignWords: IRawWord[]): Observable<IWord[]> {
+        const stringArray = `[${foreignWords.map((iWord) => `"${iWord.word}"`)}]`;
+        return this.http
+            .get<{ [foreignWord: string]: string[] }>(
+                '/dictionary-api/es/en?tokens=' + stringArray
+            )
+            .pipe(
+                map((apiTranslations) => {
+                    const translatedWords: IWord[] = [];
+                    foreignWords.forEach((foreignWord) => {
+                        let translations = apiTranslations[foreignWord.word];
+                        translatedWords.push({
+                            word: foreignWord.word,
+                            translations: translations,
+                            skill: foreignWord.skill,
+                        });
+                    });
+                    return translatedWords;
+                })
+            );
     }
 }

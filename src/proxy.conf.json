@@ -6,5 +6,13 @@
         "loglevel": "debug",
         "pathRewrite": {"^/api" : ""},
         "cookieDomainRewrite": "localhost"
+    },
+    "/dictionary-api": {
+        "target": "https://d2.duolingo.com/api/1/dictionary/hints",
+        "secure": true,
+        "changeOrigin": true,
+        "loglevel": "debug",
+        "pathRewrite": {"^/dictionary-api" : ""},
+        "cookieDomainRewrite": "localhost"
     }
 }
