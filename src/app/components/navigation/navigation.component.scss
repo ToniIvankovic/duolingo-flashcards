@@ -18,8 +18,10 @@ a{
     justify-content: center;
     align-items: center;
     color: unset;
+    line-break: normal;
+    text-align: center;
 
-    width: calc(100% / 3);
+    width: 25%;
     height: 100%;
     background-color: v.$main-color-emphasized;
     border: none;
