@@ -15,18 +15,29 @@ export class GameComponent implements OnInit {
     @Input() prefferNew?: boolean = false;
     @Input() lesson?: string;
     @Output() done = new EventEmitter<boolean>();
+    public index: number = 0;
+    public loading: boolean = false;
+
     constructor(private readonly cardsGameService: CardsGameService) {
+        this.loading = true;
         cardsGameService
             .prepareSession(this.gameMode, this.amount, this.prefferNew)
-            .subscribe(() => (this.card = cardsGameService.nextCard()));
+            .subscribe(() => {
+                this.loading = false;
+                this.card = cardsGameService.nextCard();
+                this.index = 1;
+            });
     }
 
     ngOnInit(): void {}
 
-    public onNextClick(){
+    public onNextClick() {
         this.card = this.cardsGameService.nextCard();
-        if(this.card == null){
+        console.log(this.card);
+        if (this.card == null) {
             this.done.emit(true);
+            return;
         }
+        this.index++;
     }
 }
