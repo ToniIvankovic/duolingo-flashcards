@@ -1,7 +1,9 @@
-<app-loader *ngIf="loading"></app-loader>
-<ng-container *ngIf="!loading">
-    <p *ngIf="index === 0">Press next to begin:</p>
-    <p *ngIf="index !== 0">{{index}}/{{amount}}</p>
-    <app-card [card]="card"></app-card>
-    <button (click)="onNextClick()">Next</button>
-</ng-container>
+<div class="container">
+    <app-loader *ngIf="loading"></app-loader>
+    <ng-container *ngIf="!loading">
+        <p *ngIf="index === 0">Press next to begin:</p>
+        <p *ngIf="index !== 0">{{index}}/{{amount}}</p>
+        <app-card [card]="card"></app-card>
+        <button mat-raised-button color="primary" (click)="onNextClick()">Next</button>
+    </ng-container>
+</div>
