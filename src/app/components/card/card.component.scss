@@ -6,7 +6,12 @@ mat-card{
 }
 
 :host{
-    min-width: fit-content;
     width: 50%;
     height: fit-content;
+}
+
+p{
+    max-width: 100%;
+    word-break: normal;
+    white-space: normal;
 }

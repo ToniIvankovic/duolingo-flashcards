@@ -33,11 +33,10 @@ export class GameComponent implements OnInit {
 
     public onNextClick() {
         this.card = this.cardsGameService.nextCard();
-        console.log(this.card);
+        this.index++;
         if (this.card == null) {
             this.done.emit(true);
             return;
         }
-        this.index++;
     }
 }
