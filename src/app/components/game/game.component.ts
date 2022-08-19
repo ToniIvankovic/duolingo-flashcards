@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { GameMode } from 'src/app/enums/game-modes.enum';
 import { ICard, IWord } from 'src/app/interfaces/card.interface';
 import { CardsGameService } from 'src/app/services/cards-game.service';
@@ -10,23 +11,29 @@ import { CardsGameService } from 'src/app/services/cards-game.service';
 })
 export class GameComponent implements OnInit {
     public card: ICard | null = null;
-    @Input() gameMode: GameMode = GameMode.PRACTICE_ALL;
-    @Input() amount: number = 10;
-    @Input() prefferNew?: boolean = false;
-    @Input() lesson?: string;
-    @Output() done = new EventEmitter<boolean>();
+    public gameMode: GameMode = GameMode.PRACTICE_ALL;
+    public prefferNew?: boolean = false;
+    public lesson?: string;
     public index: number = 0;
     public loading: boolean = false;
+    public amount: number = 10;
 
-    constructor(private readonly cardsGameService: CardsGameService) {
+    constructor(
+        private readonly cardsGameService: CardsGameService,
+        private readonly router: Router
+    ) {
         this.loading = true;
-        cardsGameService
-            .prepareSession(this.gameMode, this.amount, this.prefferNew)
-            .subscribe(() => {
+        let session$ = cardsGameService.existingSession();
+        if (!session$) {
+            this.router.navigateByUrl('/');
+        } else {
+            session$.subscribe((session) => {
                 this.loading = false;
                 this.card = cardsGameService.nextCard();
                 this.index = 1;
+                this.amount = session.cards.length;
             });
+        }
     }
 
     ngOnInit(): void {}
@@ -35,7 +42,6 @@ export class GameComponent implements OnInit {
         this.card = this.cardsGameService.nextCard();
         this.index++;
         if (this.card == null) {
-            this.done.emit(true);
             return;
         }
     }

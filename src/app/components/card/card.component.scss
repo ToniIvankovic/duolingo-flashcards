@@ -1,6 +1,9 @@
 mat-card{
-    text-align: center;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
 :host{
@@ -8,12 +11,18 @@ mat-card{
 }
 
 mat-card,:host{
-    max-width: 300px;
-    width: 300px;
+    max-width: 200px;
+    width: 200px;
+    min-height: 200px;
+    height: fit-content;
 }
 
 p{
     max-width: 100%;
     word-break: normal;
     white-space: normal;
+}
+
+mat-card-title{
+    font-size: large;
 }

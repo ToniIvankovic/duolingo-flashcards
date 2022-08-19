@@ -21,11 +21,13 @@ export class PracticeAllComponent implements OnInit {
     constructor(
         private readonly languageDataService: LanguageDataService,
         private readonly cardsGameService: CardsGameService,
-        private readonly router : Router
+        private readonly router: Router
     ) {}
 
     public currentLanguage$?: Observable<string>;
     public lastLesson$?: Observable<string>;
+    public amount: number | null = 20;
+    public prefferNew: boolean = false;
 
     public loading: boolean = false;
     ngOnInit(): void {
@@ -42,12 +44,10 @@ export class PracticeAllComponent implements OnInit {
     }
 
     public onStartClick(event: Event) {
-        let amount = 10;
         event.preventDefault();
+        if (!this.amount) return;
         this.cardsGameService
-            .prepareSession(GameMode.PRACTICE_ALL, amount, true)
-            .subscribe(() => {
-                this.router.navigateByUrl('/game');
-            });
+            .prepareSession(GameMode.PRACTICE_ALL, this.amount, this.prefferNew);
+        this.router.navigateByUrl('/game');
     }
 }

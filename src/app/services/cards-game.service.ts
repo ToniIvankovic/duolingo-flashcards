@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, forkJoin, map, Observable, switchMap } from 'rxjs';
+import { EMPTY, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { GameMode } from '../enums/game-modes.enum';
 import { ICard, IRawWord, ISession } from '../interfaces/card.interface';
 import { Card } from '../models/card.model';
@@ -12,12 +12,24 @@ export class CardsGameService {
     constructor(private readonly languageDataService: LanguageDataService) {}
 
     private session?: ISession;
+    private session$?: Observable<ISession>;
+
+    public existingSession() : Observable<ISession> | undefined{
+        if(this.session){
+            return of(this.session);
+        }
+        else{
+            return this.session$;
+        }
+    }
+
     public prepareSession(
         mode: GameMode,
         amount: number,
         prefferNewer?: boolean,
         lesson?: string
-    ): Observable<void> {
+    ): Observable<ISession> {
+        this.session = undefined;
         let words$: Observable<IRawWord[]>;
         if (mode == GameMode.PRACTICE_ALL) {
             words$ = this.languageDataService.pickPracticeAllWords(
@@ -27,7 +39,7 @@ export class CardsGameService {
         } else {
             words$ = EMPTY;
         }
-        return words$.pipe(
+        this.session$ = words$.pipe(
             switchMap((words) =>
                 this.languageDataService.findTranslations(words)
             ),
@@ -37,16 +49,18 @@ export class CardsGameService {
                 });
                 this.session = { cards };
                 console.log(this.session);
+                return this.session;
             })
         );
+        return this.session$;
     }
 
     public nextCard(): ICard | null {
         if (!this.session) {
             return null;
         }
-        let remainingCards = this.session.cards.filter(card => !card.seen);
-        if(remainingCards.length == 0){
+        let remainingCards = this.session.cards.filter((card) => !card.seen);
+        if (remainingCards.length == 0) {
             return null;
         }
         remainingCards[0].seen = true;
