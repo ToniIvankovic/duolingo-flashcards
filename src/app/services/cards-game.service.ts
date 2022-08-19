@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { GameMode } from '../enums/game-modes.enum';
-import { ICard, IRawWord, ISession } from '../interfaces/card.interface';
+import {
+    ICard,
+    IRawWord,
+    ISession,
+    ISessionResults,
+} from '../interfaces/card.interface';
 import { Card } from '../models/card.model';
 import { LanguageDataService } from './language-data.service';
 
@@ -14,11 +19,10 @@ export class CardsGameService {
     private session?: ISession;
     private session$?: Observable<ISession>;
 
-    public existingSession() : Observable<ISession> | undefined{
-        if(this.session){
+    public existingSession(): Observable<ISession> | undefined {
+        if (this.session) {
             return of(this.session);
-        }
-        else{
+        } else {
             return this.session$;
         }
     }
@@ -65,5 +69,18 @@ export class CardsGameService {
         }
         remainingCards[0].seen = true;
         return remainingCards[0];
+    }
+
+    public finishSession(): ISessionResults | null {
+        if (!this.session) {
+            return null;
+        }
+        const incorrect = this.session.cards.filter(card => !card.correct);
+        const totalCards = this.session.cards.length;
+        return {
+            correct: totalCards - incorrect.length,
+            incorrect,
+            total: totalCards
+        }
     }
 }

@@ -4,9 +4,18 @@
         <p *ngIf="index === 0">Press next to begin:</p>
         <p *ngIf="index !== 0">{{ index }}/{{ amount }}</p>
         <app-card [card]="card"></app-card>
-        <button mat-raised-button color="primary" (click)="onNextClick()">
+        <div class="commands">
+            <mat-icon class="red" (click)="onWrongClick()">highlight_off</mat-icon>
+            <mat-icon class="green" (click)="onCorrectClick()">check_circle_outline</mat-icon>
+        </div>
+        <!-- <button mat-raised-button color="primary" (click)="onNextClick()">
             Next
-        </button>
+        </button> -->
     </ng-container>
-    <ng-container *ngIf="index > amount"> Done </ng-container>
+    <ng-container *ngIf="index > amount"> 
+        <mat-card>
+            <mat-card-title>Results:</mat-card-title>
+            <app-session-results [results]="results"></app-session-results>
+        </mat-card>
+    </ng-container>
 </div>

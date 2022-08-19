@@ -1,5 +1,11 @@
 import { ISkill } from './api-data.interface';
 
+export interface ISessionResults{
+    correct: number;
+    total: number;
+    incorrect: ICard[];
+}
+
 export interface ISession {
     cards: ICard[];
 }

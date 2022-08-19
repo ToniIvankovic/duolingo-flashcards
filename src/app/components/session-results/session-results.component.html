@@ -1,0 +1,7 @@
+<ng-container *ngIf="results">
+    <p>Total words: {{results.total}}</p>
+    <p>Correct: {{results.correct}}</p>
+    <p>Incorrect: {{results.total - results.correct}}</p>
+    <p>Incorrect words:</p>
+    <p *ngFor="let word of incorrectWords" class="rightAlign">{{word}}</p>
+</ng-container>

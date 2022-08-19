@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameMode } from 'src/app/enums/game-modes.enum';
-import { ICard, IWord } from 'src/app/interfaces/card.interface';
+import { ICard, ISessionResults, IWord } from 'src/app/interfaces/card.interface';
 import { CardsGameService } from 'src/app/services/cards-game.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class GameComponent implements OnInit {
     public index: number = 0;
     public loading: boolean = false;
     public amount: number = 10;
+    public results? : ISessionResults | null;
 
     constructor(
         private readonly cardsGameService: CardsGameService,
@@ -38,11 +39,25 @@ export class GameComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public onNextClick() {
+    public nextCard() {
         this.card = this.cardsGameService.nextCard();
         this.index++;
         if (this.card == null) {
+            this.results = this.cardsGameService.finishSession()
             return;
         }
+    }
+
+    public onWrongClick(){
+        if(this.card){
+            this.card.correct = false;
+        }
+        this.nextCard();
+    }
+    public onCorrectClick(){
+        if(this.card){
+            this.card.correct = true;
+        }
+        this.nextCard();
     }
 }
