@@ -29,6 +29,9 @@ export class LanguageDataService {
         this.fetchApiData().subscribe();
     }
 
+    private readonly newnessThreshold: number = 100;
+    private readonly newWordsProbability: number = 0.9;
+
     private apiData$ = new ReplaySubject<IApiData>(1);
 
     private fetchApiData(): Observable<IApiData> {
@@ -119,7 +122,7 @@ export class LanguageDataService {
                 skills.forEach((skill) =>
                     words.push(
                         ...skill.words
-                            .filter(
+                            .filter(    //Exclude unimportant words (lesson name)
                                 (word) =>
                                     !connectStringToLowerCase(word).includes(
                                         connectStringToLowerCase(skill.name)
@@ -152,21 +155,20 @@ export class LanguageDataService {
                     if (!prefferNewer) {
                         index = Math.floor(Math.random() * allWords.length);
                     } else {
-                        const newnessThreshold: number = 100;
-                        const newWordsProbability: number = 0.8;
-                        if (Math.random() > newWordsProbability) {
+                        if (Math.random() > this.newWordsProbability) {
                             index = Math.floor(Math.random() * allWords.length);
                         } else {
                             index = Math.floor(
-                                Math.random() * newnessThreshold
+                                Math.random() * this.newnessThreshold
                             );
                         }
                     }
                     const chosenWord = allWords[index];
-                    if (!((chosenWord as any) in chosenWords)) {
-                        chosenWords.push(chosenWord);
-                    } else {
+                    if (chosenWords.map(word => word.word).includes(chosenWord.word)) {
+                        //Duplicate
                         i--;
+                    } else {
+                        chosenWords.push(chosenWord);
                     }
                 }
                 return chosenWords;
