@@ -1,1 +1,31 @@
-<p>lessons works!</p>
+<div class="container">
+    <p class="title">Practice a single lesson</p>
+    <app-loader *ngIf="loading"></app-loader>
+    <ng-container *ngIf="!loading">
+        <p>Language:</p>
+        <p class="largerText">{{ currentLanguage$ | async }}</p>
+        <br />
+
+        <form *ngIf="skillsList$ | async as skillsList">
+            <div class="lessons">
+                <mat-checkbox
+                    *ngFor="let skill of skillsList.reverse()"
+                    color="primary"
+                    [id]="skill.name"
+                    [name]="skill.name"
+                    (change)="onChange($event, skill)"
+                    >{{ skill.title }}</mat-checkbox
+                >
+            </div>
+
+            <button
+                mat-raised-button
+                color="primary"
+                class="startButton"
+                (click)="onStartClick($event)"
+            >
+                START
+            </button>
+        </form>
+    </ng-container>
+</div>

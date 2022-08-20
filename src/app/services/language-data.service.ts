@@ -216,4 +216,16 @@ export class LanguageDataService {
                 })
             );
     }
+
+    public getSkillsList() : Observable<ISkill[]> {
+        return this.getCurrentLanguageData().pipe(
+            map((languageData) => {
+                const sortedSkills = this.generateSkillsInOrder(
+                    languageData.skills,
+                    true
+                );
+                return sortedSkills;
+            })
+        );
+    }
 }

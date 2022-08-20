@@ -7,6 +7,7 @@ import {
     IApiData,
     ILanguage,
     ILanguageData,
+    ISkill,
 } from 'src/app/interfaces/api-data.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardsGameService } from 'src/app/services/cards-game.service';
@@ -46,8 +47,12 @@ export class PracticeAllComponent implements OnInit {
     public onStartClick(event: Event) {
         event.preventDefault();
         if (!this.amount) return;
-        this.cardsGameService
-            .prepareSession(GameMode.PRACTICE_ALL, this.amount, this.prefferNew);
+        this.cardsGameService.prepareSession(
+            GameMode.CHOSEN_LESSONS,
+            this.amount,
+            this.prefferNew
+        );
         this.router.navigateByUrl('/game');
     }
+
 }
