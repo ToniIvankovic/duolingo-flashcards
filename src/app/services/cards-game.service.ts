@@ -35,6 +35,7 @@ export class CardsGameService {
     ): Observable<ISession> {
         this.session = undefined;
         let words$: Observable<IRawWord[]>;
+        this.lastGameMode = mode;
         if (mode == GameMode.PRACTICE_ALL) {
             words$ = this.languageDataService.pickPracticeAllWords(
                 prefferNewer || false,
@@ -75,12 +76,47 @@ export class CardsGameService {
         if (!this.session) {
             return null;
         }
-        const incorrect = this.session.cards.filter(card => !card.correct);
+        const incorrect = this.session.cards.filter((card) => !card.correct);
         const totalCards = this.session.cards.length;
-        return {
+        this.lastSession = this.session;
+        this.session = undefined;
+        this.session$ = undefined;
+        this.lastSessionResults = {
             correct: totalCards - incorrect.length,
             incorrect,
-            total: totalCards
+            total: totalCards,
+        };
+        return this.lastSessionResults;
+    }
+
+    private lastSessionResults?: ISessionResults;
+    private lastSession?: ISession;
+    private lastGameMode?: GameMode;
+
+    public getLastSessionResults(): ISessionResults | undefined {
+        return this.lastSessionResults;
+    }
+
+    public repeatIncorrect(): Observable<ISession> {
+        const incorrectCards = this.lastSession?.cards
+            .filter((card) => !card.correct)
+            .map((card) => {
+                card.seen = false;
+                return card;
+            });
+        if (incorrectCards) {
+            this.session = {
+                cards: incorrectCards,
+            };
+        } else {
+            this.session = {
+                cards: [] as ICard[],
+            };
         }
+        return of(this.session);
+    }
+
+    public getLastGameMode(): GameMode | undefined {
+        return this.lastGameMode;
     }
 }

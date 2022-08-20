@@ -43,7 +43,8 @@ export class GameComponent implements OnInit {
         this.card = this.cardsGameService.nextCard();
         this.index++;
         if (this.card == null) {
-            this.results = this.cardsGameService.finishSession()
+            this.results = this.cardsGameService.finishSession();
+            this.router.navigateByUrl("/results")
             return;
         }
     }

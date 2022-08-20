@@ -14,6 +14,8 @@ import { LessonsComponent } from './pages/lessons/lessons.component';
 import { LessonsModule } from './pages/lessons/lessons.module';
 import { PracticeAllComponent } from './pages/practice-all/practice-all.component';
 import { PracticeAllModule } from './pages/practice-all/practice-all.module';
+import { ResultsComponent } from './pages/results/results.component';
+import { ResultsModule } from './pages/results/results.module';
 
 const routes: Routes = [
     {
@@ -37,6 +39,10 @@ const routes: Routes = [
                 path: 'lessons',
                 component: LessonsComponent,
             },
+            {
+                path: 'results',
+                component: ResultsComponent,
+            }
         ],
     },
     {
@@ -59,6 +65,7 @@ const routes: Routes = [
         LessonsModule,
         ChooseLanguageModule,
         GameModule,
+        ResultsModule
     ],
     exports: [RouterModule],
 })
