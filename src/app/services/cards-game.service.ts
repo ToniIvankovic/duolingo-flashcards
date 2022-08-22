@@ -43,7 +43,7 @@ export class CardsGameService {
                 amount || 10
             );
         } else {
-            words$ = EMPTY;
+            words$ = this.languageDataService.getWordsForSkills(skills || []);
         }
         this.session$ = words$.pipe(
             switchMap((words) =>

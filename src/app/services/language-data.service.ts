@@ -122,7 +122,8 @@ export class LanguageDataService {
                 skills.forEach((skill) =>
                     words.push(
                         ...skill.words
-                            .filter(    //Exclude unimportant words (lesson name)
+                            .filter(
+                                //Exclude unimportant words (lesson name)
                                 (word) =>
                                     !connectStringToLowerCase(word).includes(
                                         connectStringToLowerCase(skill.name)
@@ -164,7 +165,11 @@ export class LanguageDataService {
                         }
                     }
                     const chosenWord = allWords[index];
-                    if (chosenWords.map(word => word.word).includes(chosenWord.word)) {
+                    if (
+                        chosenWords
+                            .map((word) => word.word)
+                            .includes(chosenWord.word)
+                    ) {
                         //Duplicate
                         i--;
                     } else {
@@ -217,7 +222,7 @@ export class LanguageDataService {
             );
     }
 
-    public getSkillsList() : Observable<ISkill[]> {
+    public getSkillsList(): Observable<ISkill[]> {
         return this.getCurrentLanguageData().pipe(
             map((languageData) => {
                 const sortedSkills = this.generateSkillsInOrder(
@@ -225,6 +230,19 @@ export class LanguageDataService {
                     true
                 );
                 return sortedSkills;
+            })
+        );
+    }
+
+    public getWordsForSkills(skills: ISkill[]): Observable<IWord[]> {
+        return this.findTranslations(
+            skills.flatMap((skill) => {
+                return skill.words.map((word) => {
+                    return {
+                        word,
+                        skill,
+                    };
+                });
             })
         );
     }
