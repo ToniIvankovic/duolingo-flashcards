@@ -1,7 +1,7 @@
 @use "/src/variables.scss" as v;
 :host{
     display: block;
-    background: v.$main-color-emphasized;
+    background: v.$secondary-color;
     height: 100px;
     width: 100%;
     box-sizing: border-box;
@@ -23,15 +23,15 @@ a{
 
     width: 25%;
     height: 100%;
-    background-color: v.$main-color-emphasized;
+    background-color: v.$secondary-color;
     border: none;
     &:hover{
-        background-color: v.$secondary-color;
+        background-color: v.$secondary-color-emphasized;
     }
     cursor: pointer;
     border-radius: 0 0 10px 10px;
     font-size: large;
     &.active{
-        background-color: v.$secondary-color;
+        background-color: v.$secondary-color-emphasized;
     }
 }

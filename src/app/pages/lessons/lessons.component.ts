@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { combineLatestWith, map, Observable } from 'rxjs';
+import { combineLatestWith, map, Observable, tap } from 'rxjs';
 import { GameMode } from 'src/app/enums/game-modes.enum';
 import { ISkill } from 'src/app/interfaces/api-data.interface';
 import { CardsGameService } from 'src/app/services/cards-game.service';
@@ -20,8 +21,12 @@ export class LessonsComponent implements OnInit {
     ) {}
 
     public currentLanguage$?: Observable<string>;
-    public skillsList$? : Observable<ISkill[]>;
-    public chosenSkills : ISkill[] = [];
+    public skillsList$?: Observable<ISkill[]>;
+    public skillsList?: ISkill[];
+    public filteredSkillsList?: ISkill[];
+    public chosenSkills: ISkill[] = [];
+
+    public dataSource?: MatTableDataSource<ISkill>;
 
     public loading: boolean = false;
     ngOnInit(): void {
@@ -30,27 +35,41 @@ export class LessonsComponent implements OnInit {
             .getCurrentLearningLanguage()
             .pipe(map((language) => language.language_string));
         this.skillsList$ = this.languageDataService.getSkillsList();
+        this.skillsList$.subscribe((list) => (this.skillsList = list));
         this.currentLanguage$
             .pipe(combineLatestWith(this.skillsList$))
             .subscribe(() => (this.loading = false));
     }
 
-    public onChange(change: MatCheckboxChange, skill: ISkill){
-        if(change.checked){
+    public onChange(change: MatCheckboxChange, skill: ISkill) {
+        if (change.checked) {
             this.chosenSkills.push(skill);
-        } else{
+        } else {
             const index = this.chosenSkills.indexOf(skill);
-            if(index != -1){
+            if (index != -1) {
                 this.chosenSkills.splice(index);
             }
         }
     }
 
+    public onFilterChange(eventTarget: EventTarget | null) {
+        if (!eventTarget) return;
+        // let query = eventTarget['value'];
+        let query = '';
+        this.filteredSkillsList = this.skillsList?.filter((skill) =>
+            skill.title.includes(query)
+        );
+    }
+
     public onStartClick(event: Event) {
         event.preventDefault();
-        console.log(this.chosenSkills.map(skill => skill.title));
-        this.cardsGameService
-            .prepareSession(GameMode.CHOSEN_LESSONS, undefined, undefined, this.chosenSkills);
+        console.log(this.chosenSkills.map((skill) => skill.title));
+        this.cardsGameService.prepareSession(
+            GameMode.CHOSEN_LESSONS,
+            undefined,
+            undefined,
+            this.chosenSkills
+        );
         this.router.navigateByUrl('/game');
     }
 }

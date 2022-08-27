@@ -48,7 +48,7 @@ export class PracticeAllComponent implements OnInit {
         event.preventDefault();
         if (!this.amount) return;
         this.cardsGameService.prepareSession(
-            GameMode.CHOSEN_LESSONS,
+            GameMode.PRACTICE_ALL,
             this.amount,
             this.prefferNew
         );

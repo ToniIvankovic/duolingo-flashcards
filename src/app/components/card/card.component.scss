@@ -1,9 +1,12 @@
+@use "/src/variables.scss" as v;
+
 mat-card{
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    text-align: center;
 }
 
 :host{
@@ -25,4 +28,11 @@ p{
 
 mat-card-title{
     font-size: large;
+}
+
+.mat-card{
+    background-color: v.$main_color_emphasized;
+    *{
+        color: black;
+    }
 }
