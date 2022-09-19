@@ -25,8 +25,7 @@ export class LessonsComponent implements OnInit {
     public skillsList?: ISkill[];
     public filteredSkillsList?: ISkill[];
     public chosenSkills: ISkill[] = [];
-
-    public dataSource?: MatTableDataSource<ISkill>;
+    public filterValue: string = '';
 
     public loading: boolean = false;
     ngOnInit(): void {
@@ -35,10 +34,15 @@ export class LessonsComponent implements OnInit {
             .getCurrentLearningLanguage()
             .pipe(map((language) => language.language_string));
         this.skillsList$ = this.languageDataService.getSkillsList();
-        this.skillsList$.subscribe((list) => (this.skillsList = list));
+        this.skillsList$.subscribe((list) => {
+            this.skillsList = list;
+        });
         this.currentLanguage$
             .pipe(combineLatestWith(this.skillsList$))
-            .subscribe(() => (this.loading = false));
+            .subscribe(() => {
+                this.onFilterChange('');
+                this.loading = false;
+            });
     }
 
     public onChange(change: MatCheckboxChange, skill: ISkill) {
@@ -47,17 +51,15 @@ export class LessonsComponent implements OnInit {
         } else {
             const index = this.chosenSkills.indexOf(skill);
             if (index != -1) {
-                this.chosenSkills.splice(index);
+                this.chosenSkills.splice(index,1);
             }
         }
     }
 
-    public onFilterChange(eventTarget: EventTarget | null) {
-        if (!eventTarget) return;
-        // let query = eventTarget['value'];
-        let query = '';
+    public onFilterChange(event: string) {
+        this.filterValue = event;
         this.filteredSkillsList = this.skillsList?.filter((skill) =>
-            skill.title.includes(query)
+            skill.title.toLowerCase().includes(this.filterValue.toLowerCase())
         );
     }
 

@@ -1,16 +1,18 @@
 @use "/src/variables.scss" as v;
 @import url("../practice-all/practice-all.component.scss");
-
 .lessons{
     text-align: left;
     display: flex;
     width: 100%;
     flex-direction: column;
     flex-wrap: wrap;
-    height: 100vh;
-    align-items: flex-start;
+    align-content: center;
+    max-height: 70vh;
+    height: fit-content;
 }
-
+.lesson{
+    margin-inline: 2em;
+}
 form{
     display: block;
     width: 100%;
@@ -19,4 +21,10 @@ form{
 
 mat-checkbox{
     margin-inline-end: 1em;
+}
+
+.hint-text{
+    margin-block: 0.5em;
+    font-size: medium;
+    color: darkred;
 }
