@@ -7,7 +7,9 @@
         <br />
 
         <form *ngIf="skillsList$ | async as skillsList">
-            <input matInput type="text" (input)="onFilterChange($event.target)">
+            <mat-form-field>
+                <input matInput type="text" (input)="onFilterChange($event.target)" placeholder="Filter skills">
+            </mat-form-field>
             <div class="lessons">
                 <mat-checkbox
                     *ngFor="let skill of skillsList.reverse()"
