@@ -1,1 +1,25 @@
-<p>choose-language works!</p>
+<div class="center">
+    
+    <div *ngIf="loadingData" class="loading-div">
+        <app-loader ></app-loader>
+        <p class="loading-text">Loading language data</p>
+    </div>
+    <div *ngIf="switchingLanguage" class="loading-div">
+        <app-loader></app-loader>
+        <p class="loading-text">Switching language, please wait...</p>
+    </div>
+    <ng-container *ngIf="!loadingData && !switchingLanguage && currentLanguage">
+        <p class="title">
+            Currently chosen language:
+            <b>{{ currentLanguage.language_string }}</b>
+        </p>
+
+        <p class="subtitle">Switch language:</p>
+        <div *ngFor="let language of learningLanguages" class="grid">
+            <p class="language">
+                {{ language.language_string }}
+            </p>
+            <button mat-raised-button (click)="onSwitchClick(language)">SWITCH</button>
+        </div>
+    </ng-container>
+</div>

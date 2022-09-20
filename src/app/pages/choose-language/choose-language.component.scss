@@ -1,0 +1,48 @@
+app-loader {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.center {
+    width: 50%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-block: 1em;
+    align-items: center;
+    width: 50%;
+}
+
+button{
+    color: white
+}
+
+.language{
+    margin: 0 1em;
+}
+
+.title{
+    font-size: x-large;
+    margin-block: 2em;
+}
+
+p{
+    font-size: large;
+}
+
+.loading-text{
+    margin-top: 3em;
+    font-size: large;
+}
+
+.loading-div{
+    margin-top: 5em;
+}

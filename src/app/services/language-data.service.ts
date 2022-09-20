@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     EMPTY,
+    filter,
     map,
     Observable,
     of,
@@ -245,5 +246,22 @@ export class LanguageDataService {
                 });
             })
         );
+    }
+
+    public getLearningLanguages(): Observable<ILanguage[]> {
+        return this.apiData$.pipe(
+            map((apiData) =>
+                apiData.languages.filter(
+                    (language) => language.learning
+                )
+            )
+        );
+    }
+    public switchLanguage(newLanguage: ILanguage): Observable<void> {
+        return this.http
+            .post('api/switch_language', {
+                learning_language: newLanguage.language,
+            })
+            .pipe(map((resp) => {console.log(resp)}));
     }
 }
