@@ -109,11 +109,11 @@ export class LanguageDataService {
         );
     }
 
-    private getAllWords(): Observable<IRawWord[]> {
-        function connectStringToLowerCase(str: string): string {
-            return str.toLowerCase().split(' ').join('');
-        }
+    private connectStringToLowerCase(str: string): string {
+        return str.toLowerCase().split(' ').join('');
+    }
 
+    private getAllWords(): Observable<IRawWord[]> {
         let skillsInOrder$ = this.getCurrentLanguageData().pipe(
             map((langData) => this.generateSkillsInOrder(langData.skills, true))
         );
@@ -126,16 +126,18 @@ export class LanguageDataService {
                             .filter(
                                 //Exclude unimportant words (lesson name)
                                 (word) =>
-                                    !connectStringToLowerCase(word).includes(
-                                        connectStringToLowerCase(skill.name)
-                                    )
+                                    !this.connectStringToLowerCase(
+                                        word
+                                    ).includes(
+                                        this.connectStringToLowerCase(
+                                            skill.name
+                                        )
+                                    ) && !word.includes('+prpers')
                             )
-                            .map((word) => {
-                                return {
-                                    word: word,
-                                    skill: skill,
-                                };
-                            })
+                            .map((word) => ({
+                                word,
+                                skill,
+                            }))
                     )
                 );
                 return words;
@@ -229,7 +231,17 @@ export class LanguageDataService {
                 const sortedSkills = this.generateSkillsInOrder(
                     languageData.skills,
                     true
-                );
+                ).filter((skill) => {
+                    console.log(skill);
+                    console.log(skill.words);
+                    let retval = !skill.words.every((word) =>
+                        this.connectStringToLowerCase(word).includes(
+                            this.connectStringToLowerCase(skill.name)
+                        )
+                    );
+                    console.log(retval);
+                    return retval;
+                });
                 return sortedSkills;
             })
         );
@@ -251,9 +263,7 @@ export class LanguageDataService {
     public getLearningLanguages(): Observable<ILanguage[]> {
         return this.apiData$.pipe(
             map((apiData) =>
-                apiData.languages.filter(
-                    (language) => language.learning
-                )
+                apiData.languages.filter((language) => language.learning)
             )
         );
     }
@@ -262,6 +272,10 @@ export class LanguageDataService {
             .post('api/switch_language', {
                 learning_language: newLanguage.language,
             })
-            .pipe(map((resp) => {console.log(resp)}));
+            .pipe(
+                map((resp) => {
+                    console.log(resp);
+                })
+            );
     }
 }
