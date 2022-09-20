@@ -3,11 +3,10 @@
 .lessons{
     text-align: left;
     display: flex;
-    width: 100%;
+    width: fit-content;
     flex-direction: column;
     flex-wrap: wrap;
     align-content: center;
-    max-height: 70vh;
     height: fit-content;
 }
 .lesson{
@@ -27,4 +26,20 @@ mat-checkbox{
     margin-block: 0.5em;
     font-size: medium;
     color: darkred;
+}
+.grid{
+    width: 50%;
+    max-width: 500px;
+    min-width: fit-content;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    justify-items: center;
+}
+
+.start-button-div{
+    height: fit-content;
+    position: sticky;
+    top: 30%;
+    max-width: 250px;
 }

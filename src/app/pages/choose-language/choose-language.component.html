@@ -1,7 +1,6 @@
 <div class="center">
-    
     <div *ngIf="loadingData" class="loading-div">
-        <app-loader ></app-loader>
+        <app-loader></app-loader>
         <p class="loading-text">Loading language data</p>
     </div>
     <div *ngIf="switchingLanguage" class="loading-div">
@@ -15,11 +14,20 @@
         </p>
 
         <p class="subtitle">Switch language:</p>
-        <div *ngFor="let language of learningLanguages" class="grid">
-            <p class="language">
-                {{ language.language_string }}
-            </p>
-            <button mat-raised-button (click)="onSwitchClick(language)">SWITCH</button>
+        <div class="grid">
+            <ng-container *ngFor="let language of learningLanguages">
+                <p class="language">
+                    {{ language.language_string }}
+                </p>
+                <button
+                    class="choose-language-button"
+                    color="primary"
+                    mat-raised-button
+                    (click)="onSwitchClick(language)"
+                >
+                    SWITCH
+                </button>
+            </ng-container>
         </div>
     </ng-container>
 </div>

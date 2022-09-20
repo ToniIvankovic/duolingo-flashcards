@@ -15,18 +15,14 @@ app-loader {
 }
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
     margin-block: 1em;
     align-items: center;
-    width: 50%;
-}
-
-button{
-    color: white
+    min-width: fit-content;
 }
 
 .language{
-    margin: 0 1em;
+    margin: 1em;
 }
 
 .title{
@@ -45,4 +41,11 @@ p{
 
 .loading-div{
     margin-top: 5em;
+}
+
+.choose-language-button{
+    min-width: fit-content;
+    width: fit-content;
+    box-sizing: border-box;
+    padding-inline: 2em;
 }

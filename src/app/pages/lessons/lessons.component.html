@@ -17,31 +17,37 @@
                     name="filter"
                 />
             </mat-form-field>
-            <div class="lessons">
-                <mat-checkbox
-                    *ngFor="let skill of filteredSkillsList!.reverse()"
-                    class="lesson"
-                    color="primary"
-                    [id]="skill.name"
-                    [name]="skill.name"
-                    (change)="onChange($event, skill)"
-                    [checked]="chosenSkills.includes(skill)"
-                    >{{ skill.title }}</mat-checkbox
-                >
+            <div class="grid">
+                <div class="lessons">
+                    <mat-checkbox
+                        *ngFor="let skill of filteredSkillsList!.reverse()"
+                        class="lesson"
+                        color="primary"
+                        [id]="skill.name"
+                        [name]="skill.name"
+                        (change)="onChange($event, skill)"
+                        [checked]="chosenSkills.includes(skill)"
+                        >{{ skill.title }}</mat-checkbox
+                    >
+                </div>
+                <div class="start-button-div">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        class="startButton"
+                        (click)="onStartClick($event)"
+                        [disabled]="chosenSkills.length == 0"
+                    >
+                        START
+                    </button>
+                    <p *ngIf="chosenSkills.length == 0" class="hint-text">
+                        Choose at least 1 skill to begin
+                    </p>
+                    <p *ngIf="chosenSkills.length != 0" class="hint-text">
+                        Number of chosen skills: {{chosenSkills.length}}
+                    </p>
+                </div>
             </div>
-
-            <button
-                mat-raised-button
-                color="primary"
-                class="startButton"
-                (click)="onStartClick($event)"
-                [disabled]="chosenSkills.length == 0"
-            >
-                START
-            </button>
-            <p *ngIf="chosenSkills.length == 0" class="hint-text">
-                Choose at least 1 skill to begin
-            </p>
         </form>
     </ng-container>
 </div>

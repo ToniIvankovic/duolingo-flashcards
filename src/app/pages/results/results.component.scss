@@ -1,3 +1,4 @@
+@use "src/variables.scss" as v;
 .container{
     display: flex;
     flex-direction: column;
@@ -26,4 +27,8 @@ mat-card-title{
     justify-content: space-between;
     align-items: center;
     height: 5em;
+}
+
+.card{
+    background-color: v.$main-color-emphasized;
 }
