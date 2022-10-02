@@ -16,36 +16,62 @@ app-loader {
 .grid {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    margin-block: 1em;
     align-items: center;
     min-width: fit-content;
 }
 
-.language{
+.language {
     margin: 1em;
 }
 
-.title{
+.title {
     font-size: x-large;
-    margin-block: 2em;
+    margin-block: 1em;
 }
 
-p{
+p {
     font-size: large;
 }
 
-.loading-text{
+.loading-text {
     margin-top: 3em;
     font-size: large;
 }
 
-.loading-div{
+.loading-div {
     margin-top: 5em;
 }
 
-.choose-language-button{
+.choose-language-button {
     min-width: fit-content;
     width: fit-content;
     box-sizing: border-box;
     padding-inline: 2em;
+}
+
+.flag-and-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-block: 1em;
+    p {
+        margin: 0;
+    }
+    .flag {
+        width: 100%;
+    }
+}
+
+.flag {
+    min-height: 30px;
+    min-width: 30px;
+    width: 50%;
+    padding-inline: 2em;
+    box-sizing: border-box;
+}
+
+.title-flag {
+    margin-bottom: 2em;
 }

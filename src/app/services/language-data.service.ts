@@ -1,11 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    EMPTY,
-    filter,
     map,
     Observable,
-    of,
     ReplaySubject,
     switchMap,
     tap,
