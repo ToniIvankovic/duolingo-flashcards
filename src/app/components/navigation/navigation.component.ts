@@ -11,14 +11,18 @@ export class NavigationComponent implements OnInit {
     constructor(
         private readonly authService: AuthService,
         private readonly router: Router
-    ) {}
+    ) {
+        window.onscroll = () => {
+            this.opened = false;
+        }
+    }
 
     ngOnInit(): void {}
 
     public menus = [
         {
             title: 'CHOOSE LANGUAGE',
-            url: '',
+            url: '/choose_language',
             onClick: () => {},
         },
         {
@@ -40,4 +44,19 @@ export class NavigationComponent implements OnInit {
             },
         },
     ];
+
+    private _opened: boolean = false;
+    public get opened(): boolean {
+        return this._opened;
+    }
+    public set opened(value: boolean) {
+        this._opened = value;
+        if (value === true) {
+            document.querySelector('.shadow')?.classList.add('opened');
+            document.querySelector('.flexbox')?.classList.add('opened');
+        } else {
+            document.querySelector('.shadow')?.classList.remove('opened');
+            document.querySelector('.flexbox')?.classList.remove('opened');
+        }
+    }
 }

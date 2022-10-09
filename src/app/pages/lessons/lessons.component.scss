@@ -41,5 +41,23 @@ mat-checkbox{
     height: fit-content;
     position: sticky;
     top: 30%;
-    max-width: 250px;
+    width: 250px;
+}
+@media screen and (max-width: 700px){
+    .grid{
+        width: 80%;
+        display: block;
+        margin-bottom: 200px;
+    }
+    .start-button-div{
+        position: fixed;
+        top: unset;
+        bottom: -5px;
+        left: 0;
+        padding-bottom: 15px;
+        background-color: v.$main_color;
+        border-top: 1px dashed v.$main_color_emphasized;
+        box-sizing: border-box;
+        width: 100vw;
+    }
 }

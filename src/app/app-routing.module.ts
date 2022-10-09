@@ -19,12 +19,17 @@ import { ResultsModule } from './pages/results/results.module';
 
 const routes: Routes = [
     {
+        path: 'login',
+        component: AuthLayoutComponent,
+        canActivate: [AnonymousGuard],
+    },
+    {
         path: '',
         component: MainLayoutComponent,
         canActivate: [AuthenticatedGuard],
         children: [
             {
-                path: '',
+                path: 'choose_language',
                 component: ChooseLanguageComponent,
             },
             {
@@ -42,17 +47,12 @@ const routes: Routes = [
             {
                 path: 'results',
                 component: ResultsComponent,
-            }
+            },
+            {
+                path: '**',
+                redirectTo: '/practice_all',
+            },
         ],
-    },
-    {
-        path: 'login',
-        component: AuthLayoutComponent,
-        canActivate: [AnonymousGuard],
-    },
-    {
-        path: '**',
-        redirectTo: '/',
     },
 ];
 
@@ -65,7 +65,7 @@ const routes: Routes = [
         LessonsModule,
         ChooseLanguageModule,
         GameModule,
-        ResultsModule
+        ResultsModule,
     ],
     exports: [RouterModule],
 })

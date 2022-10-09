@@ -4,7 +4,6 @@
     <ng-container *ngIf="!loading">
         <p>Language:</p>
         <p class="largerText">{{ currentLanguage$ | async }}</p>
-        <br />
 
         <form *ngIf="filteredSkillsList">
             <mat-form-field>

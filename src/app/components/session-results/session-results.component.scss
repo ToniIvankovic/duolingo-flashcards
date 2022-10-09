@@ -10,5 +10,9 @@
 .middle{
     text-align: center;
     font-weight: 700;
-    font-size: medium;
+    font-size: min(1.2em, 90%);
+}
+
+p{
+    margin-bottom: 1em;
 }

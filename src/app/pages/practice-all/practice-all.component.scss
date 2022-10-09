@@ -1,5 +1,5 @@
 @use "/src/variables.scss" as v;
-app-loader{
+app-loader {
     display: block;
     width: 100px;
     height: 100px;
@@ -7,7 +7,7 @@ app-loader{
     margin-top: 1em;
 }
 
-.container{
+.container {
     padding: 2em;
     font-size: large;
     display: flex;
@@ -16,27 +16,28 @@ app-loader{
     align-items: center;
 }
 
-.largerText{
+.largerText {
     font-size: x-large;
 }
 
-.startButton{
+.startButton {
     padding: 1.5em;
     min-width: 150px;
     margin-top: 1em;
     font-size: large;
 }
 
-mat-checkbox{
+mat-checkbox {
     display: block;
 }
 
-.title{
+.title {
     font-size: xx-large;
     margin-bottom: 1em;
+    text-align: center;
 }
 
-form{
+form {
     display: flex;
     flex-direction: column;
     height: fit-content;
@@ -44,16 +45,34 @@ form{
     align-items: center;
 }
 
-.sliderDiv{
-    margin-top: 1em;
+.sliderDiv, .amountDiv {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    p{
+    p {
         margin: 0;
     }
 }
+.amountDiv{
+    margin-top: 1em;
+}
 
-mat-slider{
+mat-slider {
     padding-block: 0;
+}
+
+@media screen and (max-width: 700px) {
+    .container {
+        font-size: 1.5rem;
+        line-height: 1.3em;
+        padding: 1em 0;
+    }
+    .title{
+        font-size: 2rem;
+        line-height: 1.3em;
+    }
+    .amountDiv{
+        margin-top: 2em;
+        flex-direction: column;
+    }
 }

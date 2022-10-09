@@ -1,6 +1,6 @@
 @use "/src/variables.scss" as v;
 
-mat-card{
+mat-card {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -9,30 +9,39 @@ mat-card{
     text-align: center;
 }
 
-:host{
+:host {
     height: fit-content;
 }
 
-mat-card,:host{
+mat-card,
+:host {
     max-width: 200px;
     width: 200px;
-    min-height: 200px;
+    min-height: 300px;
     height: fit-content;
 }
 
-p{
+p {
     max-width: 100%;
     word-break: normal;
     white-space: normal;
 }
 
-mat-card-title{
+mat-card-title {
     font-size: large;
+    @media screen and (max-width: 700px) {
+        font-size: x-large;
+    }
+}
+mat-card-subtitle {
+    @media screen and (max-width: 700px) {
+        font-size: large;
+    }
 }
 
-.mat-card{
+.mat-card {
     background-color: v.$main_color_emphasized;
-    *{
+    * {
         color: black;
     }
 }
