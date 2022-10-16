@@ -7,7 +7,8 @@ import { IUser } from '../interfaces/user.interface';
     providedIn: 'root',
 })
 export class AuthService {
-    private loginURI = '/api/login';
+    // private loginURI = '/api/login';
+    private loginURI = 'https://www.duolingo.com/login';
 
     constructor(private readonly http: HttpClient) {}
 

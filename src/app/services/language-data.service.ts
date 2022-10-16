@@ -1,12 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    map,
-    Observable,
-    ReplaySubject,
-    switchMap,
-    tap,
-} from 'rxjs';
+import { map, Observable, ReplaySubject, switchMap, tap } from 'rxjs';
 import {
     IApiData,
     ILanguage,
@@ -27,6 +21,9 @@ export class LanguageDataService {
         this.fetchApiData().subscribe();
     }
 
+    // private readonly urlApi = '/api/users';
+    private readonly urlApi = 'https://www.duolingo.com/users';
+    private readonly dictionaryApiUrl = 'https://d2.duolingo.com/api/1/dictionary/hints';
     private readonly newnessThreshold: number = 100;
     private readonly newWordsProbability: number = 0.9;
 
@@ -35,7 +32,7 @@ export class LanguageDataService {
     private fetchApiData(): Observable<IApiData> {
         return this.http
             .get<IApiData>(
-                `/api/users/${this.authService.getCurrentUser()?.username}`
+                `${this.urlApi}/${this.authService.getCurrentUser()?.username}`
             )
             .pipe(
                 tap((apiData) => {
@@ -184,7 +181,7 @@ export class LanguageDataService {
     public findTranslation(foreignWord: IRawWord): Observable<IWord> {
         return this.http
             .get<{ [foreignWord: string]: string[] }>(
-                '/dictionary-api/es/en?' + foreignWord.word
+                this.dictionaryApiUrl + '/es/en?' + foreignWord.word
             )
             .pipe(
                 map((apiTranslations) => {
