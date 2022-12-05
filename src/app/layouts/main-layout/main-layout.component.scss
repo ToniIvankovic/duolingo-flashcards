@@ -1,8 +1,18 @@
 @use "/src/variables.scss" as v;
-:host{
+:host {
     background-color: v.$main-color;
     display: block;
     height: fit-content;
-    min-height: 100%;
+    min-height: 100vh;
     width: 100%;
+    min-width: 300px;
+}
+.rest {
+    line-height: 1.3em;
+    padding-inline: 10%;
+    padding-block: 2em;
+    @media screen and (max-width: 700px) {
+        padding-block: 70px;
+        font-size: 1.5rem;
+    }
 }

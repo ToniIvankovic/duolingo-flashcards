@@ -1,1 +1,52 @@
-<p>lessons works!</p>
+<div class="container">
+    <p class="title">Practice a single lesson</p>
+    <app-loader *ngIf="loading"></app-loader>
+    <ng-container *ngIf="!loading">
+        <p>Language:</p>
+        <p class="largerText">{{ currentLanguage$ | async }}</p>
+
+        <form *ngIf="filteredSkillsList">
+            <mat-form-field>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Filter skills"
+                    [ngModel]="filterValue"
+                    (ngModelChange)="onFilterChange($event)"
+                    name="filter"
+                />
+            </mat-form-field>
+            <div class="grid">
+                <div class="lessons">
+                    <mat-checkbox
+                        *ngFor="let skill of filteredSkillsList!.reverse()"
+                        class="lesson"
+                        color="primary"
+                        [id]="skill.name"
+                        [name]="skill.name"
+                        (change)="onChange($event, skill)"
+                        [checked]="chosenSkills.includes(skill)"
+                        >{{ skill.title }}</mat-checkbox
+                    >
+                </div>
+                <div class="start-button-div">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        class="startButton"
+                        (click)="onStartClick($event)"
+                        [disabled]="chosenSkills.length == 0"
+                    >
+                        START
+                    </button>
+                    <p *ngIf="chosenSkills.length == 0" class="hint-text">
+                        Choose at least 1 skill to begin
+                    </p>
+                    <p *ngIf="chosenSkills.length != 0" class="hint-text">
+                        Number of chosen skills: {{chosenSkills.length}}
+                    </p>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</div>

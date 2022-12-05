@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CardsComponent } from './components/cards/cards.component';
-import { LoginComponent } from './components/login/login.component';
+import { GameComponent } from './components/game/game.component';
+import { GameModule } from './components/game/game.module';
 import { AnonymousGuard } from './guards/anonymous.guard';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
@@ -14,15 +14,22 @@ import { LessonsComponent } from './pages/lessons/lessons.component';
 import { LessonsModule } from './pages/lessons/lessons.module';
 import { PracticeAllComponent } from './pages/practice-all/practice-all.component';
 import { PracticeAllModule } from './pages/practice-all/practice-all.module';
+import { ResultsComponent } from './pages/results/results.component';
+import { ResultsModule } from './pages/results/results.module';
 
 const routes: Routes = [
+    {
+        path: 'login',
+        component: AuthLayoutComponent,
+        canActivate: [AnonymousGuard],
+    },
     {
         path: '',
         component: MainLayoutComponent,
         canActivate: [AuthenticatedGuard],
         children: [
             {
-                path: '',
+                path: 'choose_language',
                 component: ChooseLanguageComponent,
             },
             {
@@ -30,15 +37,22 @@ const routes: Routes = [
                 component: PracticeAllComponent,
             },
             {
+                path: 'game',
+                component: GameComponent,
+            },
+            {
                 path: 'lessons',
                 component: LessonsComponent,
             },
+            {
+                path: 'results',
+                component: ResultsComponent,
+            },
+            {
+                path: '**',
+                redirectTo: '/practice_all',
+            },
         ],
-    },
-    {
-        path: 'login',
-        component: AuthLayoutComponent,
-        canActivate: [AnonymousGuard],
     },
 ];
 
@@ -49,7 +63,9 @@ const routes: Routes = [
         AuthLayoutModule,
         PracticeAllModule,
         LessonsModule,
-        ChooseLanguageModule
+        ChooseLanguageModule,
+        GameModule,
+        ResultsModule,
     ],
     exports: [RouterModule],
 })

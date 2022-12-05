@@ -1,35 +1,115 @@
 @use "/src/variables.scss" as v;
-:host{
+:host {
     display: block;
-    background: v.$main-color-emphasized;
+    background: v.$secondary-color;
     height: 100px;
     width: 100%;
     box-sizing: border-box;
     border-radius: 0 0 10px 10px;
 }
 
-.flexbox{
+.flexbox {
     height: 100%;
     display: flex;
+    @media screen and (max-width: 700px) {
+        display: none;
+    }
 }
-a{
+a {
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
     color: unset;
+    line-break: normal;
+    text-align: center;
 
-    width: calc(100% / 3);
+    width: 25%;
     height: 100%;
-    background-color: v.$main-color-emphasized;
+    background-color: v.$secondary-color;
     border: none;
-    &:hover{
-        background-color: v.$secondary-color;
+    &:hover {
+        background-color: v.$secondary-color-emphasized;
     }
     cursor: pointer;
     border-radius: 0 0 10px 10px;
     font-size: large;
-    &.active{
-        background-color: v.$secondary-color;
+    &.active {
+        background-color: v.$secondary-color-emphasized;
+    }
+}
+
+.hamburger-menu-div {
+    display: none;
+    padding: 20px 0;
+    @media (max-width: 700px) {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 50px;
+        width: 100%;
+    }
+
+    .hamburger-menu {
+        margin-inline: 20px;
+    }
+
+    .hamburger-menu__line {
+        width: 30px;
+        height: 3px;
+        background-color: black;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+}
+.shadow {
+    display: none;
+}
+@media screen and (max-width: 700px) {
+    a {
+        font-size: medium;
+    }
+    
+    :host {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: rgba($color: #000000, $alpha: 0);
+        height: fit-content;
+        width: fit-content;
+    }
+
+    .flexbox {
+        &.opened {
+            display: block;
+            z-index: 2;
+        }
+        display: none;
+        position: absolute;
+        top: 80px;
+        right: 0;
+        width: 100vw;
+        box-sizing: border-box;
+        height: fit-content;
+
+        .menu {
+            width: 100%;
+            height: fit-content;
+            padding-block: 2em;
+            border-radius: 0;
+            border-block: 1px solid black;
+            margin-top: -1px;
+        }
+    }
+
+    .shadow.opened {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.35);
+        z-index: 1;
     }
 }

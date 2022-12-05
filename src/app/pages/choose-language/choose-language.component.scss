@@ -1,0 +1,96 @@
+app-loader {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.center {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    align-items: center;
+    min-width: fit-content;
+}
+
+.language {
+    margin: 1em;
+}
+
+.title {
+    font-size: xx-large;
+    line-height: 1.2em;
+    text-align: center;
+    margin-block: 1em;
+}
+
+p {
+    font-size: large;
+}
+
+.loading-text {
+    margin-top: 3em;
+    font-size: large;
+}
+
+.loading-div {
+    margin-top: 5em;
+}
+
+.choose-language-button {
+    min-width: fit-content;
+    width: fit-content;
+    box-sizing: border-box;
+    padding-inline: 2em;
+}
+
+.flag-and-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-block: 1em;
+    p {
+        margin: 0;
+    }
+    .flag {
+        width: 100%;
+    }
+}
+
+.flag {
+    min-height: 30px;
+    min-width: 30px;
+    width: 100%;
+    max-width: 200px;
+    padding-inline: 2em;
+    box-sizing: border-box;
+}
+
+.title-flag {
+    margin-bottom: 4em;
+}
+
+@media screen and (max-width: 700px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .flag-and-title {
+        margin-block: 0.5em;
+    }
+    .flag {
+        padding: unset;
+        width: 100%;
+    }
+    .choose-language-button {
+        margin-bottom: 3rem;
+    }
+}

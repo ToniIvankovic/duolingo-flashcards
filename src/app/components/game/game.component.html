@@ -1,0 +1,15 @@
+<div class="container">
+    <app-loader *ngIf="loading"></app-loader>
+    <ng-container *ngIf="!loading && index <= amount">
+        <p *ngIf="index === 0">Press next to begin:</p>
+        <p *ngIf="index !== 0">{{ index }}/{{ amount }}</p>
+        <app-card [card]="card"></app-card>
+        <div class="commands">
+            <mat-icon class="red" (click)="onWrongClick()">highlight_off</mat-icon>
+            <mat-icon class="green" (click)="onCorrectClick()">check_circle_outline</mat-icon>
+        </div>
+        <!-- <button mat-raised-button color="primary" (click)="onNextClick()">
+            Next
+        </button> -->
+    </ng-container>
+</div>

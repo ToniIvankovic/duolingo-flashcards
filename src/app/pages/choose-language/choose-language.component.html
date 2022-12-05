@@ -1,1 +1,52 @@
-<p>choose-language works!</p>
+<div class="center">
+    <div *ngIf="loadingData" class="loading-div">
+        <app-loader></app-loader>
+        <p class="loading-text">Loading language data</p>
+    </div>
+    <div *ngIf="switchingLanguage" class="loading-div">
+        <app-loader></app-loader>
+        <p class="loading-text">Switching language, please wait...</p>
+    </div>
+    <ng-container *ngIf="!loadingData && !switchingLanguage && currentLanguage">
+        <p class="title">
+            Currently chosen language:
+            <b>{{ currentLanguage.language_string }}</b>
+        </p>
+        <svg-icon
+            src="assets/flags.svg"
+            [id]="currentLanguage.language"
+            [viewBox]="
+                '0 ' + flagsLocations[currentLanguage.language] + ' 82 66'
+            "
+            class="flag title-flag"
+        >
+        </svg-icon>
+        <p class="subtitle">Switch language:</p>
+        <div class="grid">
+            <ng-container *ngFor="let language of learningLanguages">
+                <div class="flag-and-title">
+                    <svg-icon
+                        src="assets/flags.svg"
+                        [id]="language.language"
+                        [viewBox]="
+                            '0 ' + flagsLocations[language.language] + ' 82 66'
+                        "
+                        class="flag"
+                    >
+                    </svg-icon>
+                    <p class="language">
+                        {{ language.language_string }}
+                    </p>
+                </div>
+                <button
+                    class="choose-language-button"
+                    color="primary"
+                    mat-raised-button
+                    (click)="onSwitchClick(language)"
+                >
+                    SWITCH
+                </button>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>

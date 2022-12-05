@@ -1,3 +1,4 @@
+@use "src/variables.scss" as v;
 label{
     display: block;
     margin-block-start: 1em;
@@ -13,4 +14,8 @@ app-loader{
     height: 20px;
     margin: 0 auto;
     display: block;
+}
+
+.mat-raised-button{
+    background-color: v.$secondary-color-emphasized;
 }

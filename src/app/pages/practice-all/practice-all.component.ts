@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { combineLatestWith, map, Observable, tap } from 'rxjs';
+import { GameMode } from 'src/app/enums/game-modes.enum';
 import {
     IApiData,
     ILanguage,
     ILanguageData,
+    ISkill,
 } from 'src/app/interfaces/api-data.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { CardsGameService } from 'src/app/services/cards-game.service';
 import { LanguageDataService } from 'src/app/services/language-data.service';
 
 @Component({
@@ -16,13 +20,15 @@ import { LanguageDataService } from 'src/app/services/language-data.service';
 })
 export class PracticeAllComponent implements OnInit {
     constructor(
-        private readonly http: HttpClient,
-        private readonly authService: AuthService,
-        private readonly languageDataService: LanguageDataService
+        private readonly languageDataService: LanguageDataService,
+        private readonly cardsGameService: CardsGameService,
+        private readonly router: Router
     ) {}
 
     public currentLanguage$?: Observable<string>;
     public lastLesson$?: Observable<string>;
+    public amount: number | null = 20;
+    public prefferNew: boolean = false;
 
     public loading: boolean = false;
     ngOnInit(): void {
@@ -34,17 +40,19 @@ export class PracticeAllComponent implements OnInit {
             .getLastCompletedSkill()
             .pipe(map((skill) => skill.title));
         this.currentLanguage$
-            .pipe(
-                combineLatestWith(this.lastLesson$),
-                tap(() => (this.loading = false))
-            )
-            .subscribe();
+            .pipe(combineLatestWith(this.lastLesson$))
+            .subscribe(() => (this.loading = false));
     }
 
     public onStartClick(event: Event) {
         event.preventDefault();
-        this.languageDataService
-            .pickPracticeAllWords(true, 10)
-            .subscribe(console.log);
+        if (!this.amount) return;
+        this.cardsGameService.prepareSession(
+            GameMode.PRACTICE_ALL,
+            this.amount,
+            this.prefferNew
+        );
+        this.router.navigateByUrl('/game');
     }
+
 }

@@ -1,5 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable, ɵclearResolutionOfComponentResourcesQueue } from '@angular/core';
+import {
+    Injectable,
+    ɵclearResolutionOfComponentResourcesQueue,
+} from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { IUser } from '../interfaces/user.interface';
 
@@ -8,10 +11,14 @@ import { IUser } from '../interfaces/user.interface';
 })
 export class AuthService {
     private loginURI = '/api/login';
+    // private loginURI = 'https://www.duolingo.com/login';
 
     constructor(private readonly http: HttpClient) {}
 
-    public login(username: string, password: string): Observable<IUser | {failure: string, message: string}> {
+    public login(
+        username: string,
+        password: string
+    ): Observable<IUser | { failure: string; message: string }> {
         return (
             this.http.post(
                 this.loginURI,
@@ -24,25 +31,33 @@ export class AuthService {
                     responseType: 'json',
                     withCredentials: true,
                 }
-            ) as Observable<HttpResponse<{response: string, user_id: string, username: string} | {failure: string, message: string}>>
+            ) as Observable<
+                HttpResponse<
+                    | { response: string; user_id: string; username: string }
+                    | { failure: string; message: string }
+                >
+            >
         ).pipe(
-            map((response) => response.body),
-            tap((body) => {
-                if(body && "response" in body && body.response === "OK"){
+            tap((response) => {
+                let body = response.body;
+                if (body && 'response' in body && body.response === 'OK') {
                     document.cookie = `username=${body!.username}`;
                     document.cookie = `user_id=${body!.user_id}`;
+                    let jwt = response.headers.get('jwt_token');
+                    document.cookie = `jwt_token=${jwt};domain=.duolingo.com;`;
                 }
             }),
-            map(body => {
-                if("response" in body!){
+            map((response) => {
+                let body = response.body;
+                if ('response' in body!) {
                     return {
                         user_id: body!.user_id,
-                        username: body!.username
+                        username: body!.username,
                     } as IUser;
-                } else{
+                } else {
                     return {
                         failure: body!.failure,
-                        message: body!.message
+                        message: body!.message,
                     };
                 }
             })

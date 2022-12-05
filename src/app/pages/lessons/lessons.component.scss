@@ -1,0 +1,63 @@
+@use "/src/variables.scss" as v;
+@import url("../practice-all/practice-all.component.scss");
+.lessons{
+    text-align: left;
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    height: fit-content;
+}
+.lesson{
+    margin-inline: 2em;
+}
+form{
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+mat-checkbox{
+    margin-inline-end: 1em;
+}
+
+.hint-text{
+    margin-block: 0.5em;
+    font-size: medium;
+    color: darkred;
+}
+.grid{
+    width: 50%;
+    max-width: 500px;
+    min-width: fit-content;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    justify-items: center;
+}
+
+.start-button-div{
+    height: fit-content;
+    position: sticky;
+    top: 30%;
+    width: 250px;
+}
+@media screen and (max-width: 700px){
+    .grid{
+        width: 80%;
+        display: block;
+        margin-bottom: 200px;
+    }
+    .start-button-div{
+        position: fixed;
+        top: unset;
+        bottom: -5px;
+        left: 0;
+        padding-bottom: 15px;
+        background-color: v.$main_color;
+        border-top: 1px dashed v.$main_color_emphasized;
+        box-sizing: border-box;
+        width: 100vw;
+    }
+}

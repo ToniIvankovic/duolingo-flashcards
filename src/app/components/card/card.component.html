@@ -1,0 +1,8 @@
+<mat-card (click)="clicked = !clicked">
+    <mat-card-title>
+        {{card?.word?.word}}
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="clicked" >
+        {{translations}}
+    </mat-card-subtitle>
+</mat-card>

@@ -11,10 +11,37 @@
         <br />
 
         <form>
-            <mat-checkbox color="primary" id="newerPref"
+            <mat-checkbox
+                color="primary"
+                id="newerPref"
+                name="newerPref"
+                [checked]="prefferNew"
+                [(ngModel)]="prefferNew"
                 >Preffer newer lessons?</mat-checkbox
             >
-            <button class="startButton" (click)="onStartClick($event)">
+            <div class="amountDiv">
+                <p>Amount of words:</p>
+                <div class="sliderDiv">
+                    <mat-slider
+                        min="5"
+                        max="50"
+                        step="1"
+                        value="20"
+                        thumbLabel
+                        tickInterval="10"
+                        (input)="amount = $event.value"
+                        aria-labelledby="slider"
+                    ></mat-slider>
+                    <p>{{ amount }}</p>
+                </div>
+            </div>
+
+            <button
+                mat-raised-button
+                color="primary"
+                class="startButton"
+                (click)="onStartClick($event)"
+            >
                 START
             </button>
         </form>

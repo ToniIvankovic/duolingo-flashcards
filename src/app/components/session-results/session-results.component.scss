@@ -1,0 +1,18 @@
+.rightAlign{
+    text-align: right;
+}
+
+:host{
+    display: block;
+    width: 100%;
+}
+
+.middle{
+    text-align: center;
+    font-weight: 700;
+    font-size: min(1.2em, 90%);
+}
+
+p{
+    margin-bottom: 1em;
+}

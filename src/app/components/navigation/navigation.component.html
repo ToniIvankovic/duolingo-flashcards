@@ -1,3 +1,11 @@
+<div class="hamburger-menu-div">
+    <div class="hamburger-menu" (click)="opened = !opened">
+        <div class="hamburger-menu__line"></div>
+        <div class="hamburger-menu__line"></div>
+        <div class="hamburger-menu__line"></div>
+    </div>
+</div>
+<div class="shadow" (click)="opened = false" (scroll)="opened = false"></div>
 <div class="flexbox">
     <a
         class="menu"
@@ -5,7 +13,7 @@
         [routerLink]="menu.url"
         [routerLinkActive]="'active'"
         [routerLinkActiveOptions]="{ exact: true }"
-        (click)="menu.onClick()"
+        (click)="menu.onClick(); opened = false"
     >
         {{ menu.title }}
     </a>

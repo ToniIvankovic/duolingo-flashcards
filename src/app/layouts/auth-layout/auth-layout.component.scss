@@ -1,5 +1,6 @@
+@use "src/variables.scss" as v;
 :host{
-    background-color: rgb(41, 218, 25);
+    background-color: v.$main-color;
     height: fit-content;
     min-height: 100%;
     width: 100%;
@@ -20,6 +21,7 @@
     border: 1px dotted black;
     border-radius: 10px;
     box-sizing: border-box;
+    background-color: v.$secondary-color;
 }
 
 .title{

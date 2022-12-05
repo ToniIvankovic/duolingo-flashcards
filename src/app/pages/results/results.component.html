@@ -1,0 +1,11 @@
+<div class="container">
+    <mat-card class="card">
+        <mat-card-title>Results:</mat-card-title>
+        <app-session-results [results]="results"></app-session-results>
+    </mat-card>
+    <div class="flexBetween">
+        <button *ngIf="results?.incorrect?.length !== 0" mat-raised-button color="primary" (click)="onRepeatClick()">Repeat incorrect words</button>
+        <button mat-raised-button color="primary" (click)="onPracticeAgainClick()">Practice again</button>
+
+    </div>
+</div>
