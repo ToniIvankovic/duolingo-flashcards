@@ -10,8 +10,8 @@ import { IUser } from '../interfaces/user.interface';
     providedIn: 'root',
 })
 export class AuthService {
-    // private loginURI = '/api/login';
-    private loginURI = 'https://www.duolingo.com/login';
+    private loginURI = '/api/login';
+    // private loginURI = 'https://www.duolingo.com/login';
 
     constructor(private readonly http: HttpClient) {}
 
@@ -43,8 +43,8 @@ export class AuthService {
                 if (body && 'response' in body && body.response === 'OK') {
                     document.cookie = `username=${body!.username}`;
                     document.cookie = `user_id=${body!.user_id}`;
-                    // let jwt = response.headers.get('jwt');
-                    // document.cookie = `jwt_token=${jwt};domain=.duolingo.com;`;
+                    let jwt = response.headers.get('jwt_token');
+                    document.cookie = `jwt_token=${jwt};domain=.duolingo.com;`;
                 }
             }),
             map((response) => {

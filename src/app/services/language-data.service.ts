@@ -21,9 +21,10 @@ export class LanguageDataService {
         this.fetchApiData().subscribe();
     }
 
-    // private readonly urlApi = '/api/users';
-    private readonly urlApi = 'https://www.duolingo.com/users';
-    private readonly dictionaryApiUrl = 'https://d2.duolingo.com/api/1/dictionary/hints';
+    private readonly urlApi = '/api/users';
+    // private readonly urlApi = 'https://www.duolingo.com/users';
+    private readonly dictionaryApiUrl = '/dictionary-api';
+    // private readonly dictionaryApiUrl = 'https://d2.duolingo.com/api/1/dictionary/hints';
     private readonly newnessThreshold: number = 100;
     private readonly newWordsProbability: number = 0.9;
 
@@ -226,14 +227,14 @@ export class LanguageDataService {
                     languageData.skills,
                     true
                 ).filter((skill) => {
-                    console.log(skill);
-                    console.log(skill.words);
+                    // console.log(skill);
+                    // console.log(skill.words);
                     let retval = !skill.words.every((word) =>
                         this.connectStringToLowerCase(word).includes(
                             this.connectStringToLowerCase(skill.name)
                         )
                     );
-                    console.log(retval);
+                    // console.log(retval);
                     return retval;
                 });
                 return sortedSkills;
