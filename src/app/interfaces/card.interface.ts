@@ -1,4 +1,4 @@
-import { ISkill } from './api-data.interface';
+import { ITreeSkill } from './api-data.interface';
 
 export interface ISessionResults{
     correct: number;
@@ -19,10 +19,10 @@ export interface ICard {
 export interface IWord {
     word: string;
     translations: string[];
-    skill: ISkill;
+    skill: ITreeSkill;
 }
 
 export interface IRawWord {
     word: string;
-    skill: ISkill;
+    skill: ITreeSkill;
 }

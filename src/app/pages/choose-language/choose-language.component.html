@@ -10,13 +10,13 @@
     <ng-container *ngIf="!loadingData && !switchingLanguage && currentLanguage">
         <p class="title">
             Currently chosen language:
-            <b>{{ currentLanguage.language_string }}</b>
+            <b>{{ currentLanguage.title }}</b>
         </p>
         <svg-icon
             src="assets/flags.svg"
-            [id]="currentLanguage.language"
+            [id]="currentLanguage.learningLanguage"
             [viewBox]="
-                '0 ' + flagsLocations[currentLanguage.language] + ' 82 66'
+                '0 ' + flagsLocations[currentLanguage.learningLanguage] + ' 82 66'
             "
             class="flag title-flag"
         >
@@ -27,15 +27,15 @@
                 <div class="flag-and-title">
                     <svg-icon
                         src="assets/flags.svg"
-                        [id]="language.language"
+                        [id]="language.learningLanguage"
                         [viewBox]="
-                            '0 ' + flagsLocations[language.language] + ' 82 66'
+                            '0 ' + flagsLocations[language.learningLanguage] + ' 82 66'
                         "
                         class="flag"
                     >
                     </svg-icon>
                     <p class="language">
-                        {{ language.language_string }}
+                        {{ language.title }}
                     </p>
                 </div>
                 <button
