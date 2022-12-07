@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+    combineLatest,
     flatMap,
     forkJoin,
     map,
@@ -9,6 +10,7 @@ import {
     of,
     ReplaySubject,
     switchMap,
+    take,
     tap,
 } from 'rxjs';
 import {
@@ -128,33 +130,10 @@ export class LanguageDataService {
         return str.toLowerCase().split(' ').join('');
     }
 
-    //TODO
     private getAllWords(): Observable<IRawWord[]> {
-        return this.getCurrentLanguageData().pipe(
-            map((langData) => {
-                let units = langData.path;
-                const words: IRawWord[] = [];
-                // units.forEach((unit) =>
-                //     words.push(
-                //         ...skill.words
-                //             .filter(
-                //                 //Exclude unimportant words (lesson name)
-                //                 (word) =>
-                //                     !this.connectStringToLowerCase(
-                //                         word
-                //                     ).includes(
-                //                         this.connectStringToLowerCase(
-                //                             skill.name
-                //                         )
-                //                     ) && !word.includes('+prpers')
-                //             )
-                //             .map((word) => ({
-                //                 word,
-                //                 skill,
-                //             }))
-                //     )
-                // );
-                return words;
+        return this.getEligibleUnitsList().pipe(
+            switchMap((units) => {
+                return this.getWordsForUnits(units);
             })
         );
     }
@@ -219,24 +198,33 @@ export class LanguageDataService {
         const stringArray = `[${foreignWords.map(
             (iWord) => `"${iWord.word}"`
         )}]`;
-        return this.http
-            .get<{ [foreignWord: string]: string[] }>(
-                '/dictionary-api/es/en?tokens=' + stringArray
-            )
-            .pipe(
-                map((apiTranslations) => {
-                    const translatedWords: IWord[] = [];
-                    foreignWords.forEach((foreignWord) => {
-                        let translations = apiTranslations[foreignWord.word];
-                        translatedWords.push({
-                            word: foreignWord.word,
-                            translations: translations,
-                            skill: foreignWord.skill,
-                        });
-                    });
-                    return translatedWords;
-                })
-            );
+        return of(
+            foreignWords.map((iWord) => {
+                return {
+                    word: iWord.word,
+                    translations: ['aaa', 'bbb'],
+                    skill: iWord.skill,
+                };
+            })
+        );
+        // return this.http
+        //     .get<{ [foreignWord: string]: string[] }>(
+        //         '/dictionary-api/es/en?tokens=' + stringArray
+        //     )
+        //     .pipe(
+        //         map((apiTranslations) => {
+        //             const translatedWords: IWord[] = [];
+        //             foreignWords.forEach((foreignWord) => {
+        //                 let translations = apiTranslations[foreignWord.word];
+        //                 translatedWords.push({
+        //                     word: foreignWord.word,
+        //                     translations: translations,
+        //                     skill: foreignWord.skill,
+        //                 });
+        //             });
+        //             return translatedWords;
+        //         })
+        //     );
     }
 
     public getEligibleUnitsList(): Observable<IPathUnit[]> {
@@ -252,14 +240,16 @@ export class LanguageDataService {
         );
     }
 
-    public getWordsForUnits(units: IPathUnit[]): Observable<IWord[]> {
+    public getWordsForUnits(units: IPathUnit[]): Observable<IRawWord[]> {
         //Fill an array with IRawWord objects received from getWordsForUnit for each unit in units and return the array as observable
-        return forkJoin(units.map((unit) => this.getWordsForUnit(unit))).pipe(
+        let wordsFromUnits$ = units.map((unit) => this.getWordsForUnit(unit));
+        return combineLatest(wordsFromUnits$).pipe(
+            take(1),
             map((words) => words.flat())
         );
     }
 
-    public getWordsForUnit(unit: IPathUnit): Observable<IWord[]> {
+    public getWordsForUnit(unit: IPathUnit): Observable<IRawWord[]> {
         //For each level in unit.levels, find an equivalent skill in treeApiData$ skills and get words from that skills with getWordsForSkill
         return this.treeApiData$.pipe(
             map((treeApiData) => treeApiData.language_data),
@@ -271,34 +261,29 @@ export class LanguageDataService {
                     )
                 );
             }),
-            switchMap((treeSkills) => {
-                return forkJoin(
-                    unit.levels.map((level) => {
-                        const skills = treeSkills.filter(
-                            (skill) =>
-                                skill.id === level.pathLevelMetadata.skillId ||
-                                level.pathLevelMetadata.skillIds?.includes(
-                                    skill.id
-                                )
-                        );
-                        return this.getWordsForSkills(skills);
-                    })
-                ).pipe(map((words) => words.flat()));
+            map((treeSkills) => {
+                return unit.levels.flatMap((level) => {
+                    const skills = treeSkills.filter(
+                        (skill) =>
+                            skill.id === level.pathLevelMetadata.skillId ||
+                            level.pathLevelMetadata.skillIds?.includes(skill.id)
+                    );
+                    let words = this.getWordsForSkills(skills);
+                    return words;
+                });
             })
         );
     }
 
-    public getWordsForSkills(skills: ITreeSkill[]): Observable<IWord[]> {
-        return this.findTranslations(
-            skills.flatMap((skill) => {
-                return skill.words.map((word) => {
-                    return {
-                        word,
-                        skill,
-                    };
-                });
-            })
-        );
+    public getWordsForSkills(skills: ITreeSkill[]): IRawWord[] {
+        return skills.flatMap((skill) => {
+            return skill.words.map((word) => {
+                return {
+                    word,
+                    skill,
+                } as IRawWord;
+            });
+        });
     }
 
     public getLearningLanguages(): Observable<IPathCourse[]> {
