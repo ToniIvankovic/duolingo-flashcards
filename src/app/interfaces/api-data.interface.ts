@@ -5,6 +5,7 @@ export interface IPathApiData {
 
 export interface IPathCourse {
     learningLanguage: string;
+    fromLanguage: string;
     title: string;
 }
 

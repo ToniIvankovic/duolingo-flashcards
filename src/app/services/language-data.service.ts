@@ -25,6 +25,7 @@ import {
     IPathUnit,
 } from '../interfaces/api-data.interface';
 import { IRawWord, IWord } from '../interfaces/card.interface';
+import { TranslationResponse } from '../interfaces/google_obj.interface';
 import { AuthService } from './auth.service';
 import { TranslationService } from './translation.service';
 
@@ -128,10 +129,6 @@ export class LanguageDataService {
         );
     }
 
-    private connectStringToLowerCase(str: string): string {
-        return str.toLowerCase().split(' ').join('');
-    }
-
     private getAllWords(): Observable<IRawWord[]> {
         return this.getEligibleUnitsList().pipe(
             switchMap((units) => {
@@ -199,22 +196,31 @@ export class LanguageDataService {
     public findTranslations(foreignWords: IRawWord[]): Observable<IWord[]> {
         const stringArray = foreignWords.map((iWord) => `${iWord.word}`);
         console.log(stringArray);
-        this.translationService
-            .translate({
-                q: stringArray,
-                target: 'es',
-                source: 'ca'
-            })
-            .subscribe((res) => console.log(res));
-        return of(
-            foreignWords.map((iWord) => {
-                return {
-                    word: iWord.word,
-                    translations: ['aaa', 'bbb'],
-                    skill: iWord.skill,
-                };
-            })
-        );
+        return this.getCurrentLearningLanguage()
+            .pipe(
+                switchMap((language) =>
+                    this.translationService.translate({
+                        q: stringArray,
+                        target: language.fromLanguage,
+                        source: language.learningLanguage,
+                    })
+                )
+            )
+            .pipe(
+                map((translations) => {
+                    return foreignWords.map((iWord) => {
+                        let index = stringArray.indexOf(iWord.word);
+                        return {
+                            word: iWord.word,
+                            translations: [
+                                (translations as TranslationResponse).data
+                                    .translations[index].translatedText,
+                            ],
+                            skill: iWord.skill,
+                        };
+                    });
+                })
+            );
         // return this.http
         //     .get<{ [foreignWord: string]: string[] }>(
         //         '/dictionary-api/es/en?tokens=' + stringArray
