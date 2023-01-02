@@ -26,6 +26,7 @@ import {
 } from '../interfaces/api-data.interface';
 import { IRawWord, IWord } from '../interfaces/card.interface';
 import { AuthService } from './auth.service';
+import { TranslationService } from './translation.service';
 
 @Injectable({
     providedIn: 'root',
@@ -33,7 +34,8 @@ import { AuthService } from './auth.service';
 export class LanguageDataService {
     constructor(
         private readonly http: HttpClient,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly translationService: TranslationService
     ) {
         this.fetchTreeApiData().subscribe();
         this.fetchPathApiData().subscribe();
@@ -195,9 +197,15 @@ export class LanguageDataService {
     }
 
     public findTranslations(foreignWords: IRawWord[]): Observable<IWord[]> {
-        const stringArray = `[${foreignWords.map(
-            (iWord) => `"${iWord.word}"`
-        )}]`;
+        const stringArray = foreignWords.map((iWord) => `${iWord.word}`);
+        console.log(stringArray);
+        this.translationService
+            .translate({
+                q: stringArray,
+                target: 'es',
+                source: 'ca'
+            })
+            .subscribe((res) => console.log(res));
         return of(
             foreignWords.map((iWord) => {
                 return {
