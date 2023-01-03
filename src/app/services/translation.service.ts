@@ -8,7 +8,8 @@ import { environment } from '../../environments/environment';
 })
 export class TranslationService {
     url = 'https://translation.googleapis.com/language/translate/v2?key=';
-    key = environment.private_key;
+    // key = environment.private_key;
+    key = process.env['private_key'];
     constructor(private http: HttpClient) {}
     
     translate(obj: GoogleObj) {
