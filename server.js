@@ -11,11 +11,6 @@ const _app_folder = '.';
 const app = express();
 app.use(compression());
 
-
-// app.use('/api', proxy('https://www.duolingo.com', {
-
-// }));
-
 app.use(
   '/api',
   createProxyMiddleware({
@@ -28,12 +23,13 @@ app.use(
   })
 );
 
+const path = "/dist/duolingo-flashcards";
 // ---- SERVE STATIC FILES ---- //
-app.get('*.*', express.static(_app_folder, { maxAge: '1y' }));
+app.get('*.*', express.static(_app_folder + path, { maxAge: '1y' }));
 
 // ---- SERVE APLICATION PATHS ---- //
 app.all('*', function (req, res) {
-  res.status(200).sendFile(`/`, { root: _app_folder });
+  res.status(200).sendFile(path + `/index.html`, { root: _app_folder });
 });
 
 // ---- START UP THE NODE SERVER  ----
