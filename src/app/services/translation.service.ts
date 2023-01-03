@@ -7,13 +7,13 @@ import { environment } from '../../environments/environment';
     providedIn: 'root',
 })
 export class TranslationService {
-    url = 'https://translation.googleapis.com/language/translate/v2';
+    url = 'https://translation.googleapis.com/language/translate/v2?key=';
     key = environment.private_key;
     constructor(private http: HttpClient) {}
     
     translate(obj: GoogleObj) {
-        return this.http.post(this.url, obj, {
-            headers: { Authorization: `Bearer  ${this.key}` },
+        return this.http.post(this.url + this.key, obj, {
+            // headers: { Authorization: `Bearer  ${this.key}` },
         });
     }
 }

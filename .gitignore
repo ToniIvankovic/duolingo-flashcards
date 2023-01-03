@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 duolingo-372311-6a3559972e1e.json
 src/environments/environment.ts
-src/environments/environment.ts
+api_key.json

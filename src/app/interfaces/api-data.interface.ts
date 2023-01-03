@@ -7,6 +7,7 @@ export interface IPathCourse {
     learningLanguage: string;
     fromLanguage: string;
     title: string;
+    id: string;
 }
 
 export interface IPathCourseExtended {
@@ -14,6 +15,7 @@ export interface IPathCourseExtended {
     title: string;
     fromLanguage: string;
     path: IPathUnit[];
+    id: string;
 }
 
 export interface IPathUnit {

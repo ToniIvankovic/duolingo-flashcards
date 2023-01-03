@@ -94,33 +94,6 @@ export class LanguageDataService {
         return this.pathApiData$.pipe(map((apiData) => apiData.currentCourse));
     }
 
-    // private generateSkillsInOrder(
-    //     skills: ITreeSkill[],
-    //     onlyLearned: boolean = true
-    // ): ITreeSkill[] {
-    //     const root: ITreeSkill = skills.filter(
-    //         (skill) => skill.dependencies.length == 0
-    //     )[0];
-    //     const queue = [root];
-    //     const sortedSkills = [];
-    //     while (queue.length != 0) {
-    //         const skill1 = queue.shift()!;
-    //         if (onlyLearned && !skill1.learned) {
-    //             continue;
-    //         }
-    //         for (let otherSkill of skills) {
-    //             if (
-    //                 otherSkill.dependencies.indexOf(skill1.title) != -1 &&
-    //                 queue.indexOf(otherSkill) == -1
-    //             ) {
-    //                 queue.push(otherSkill);
-    //             }
-    //         }
-    //         sortedSkills.push(skill1);
-    //     }
-    //     return sortedSkills;
-    // }
-
     public getCurrentLearningLanguage(): Observable<IPathCourse> {
         return this.pathApiData$.pipe(
             map((apiData) => {
@@ -301,7 +274,13 @@ export class LanguageDataService {
     }
 
     public getLearningLanguages(): Observable<IPathCourse[]> {
-        return this.pathApiData$.pipe(map((apiData) => apiData.courses));
+        return this.pathApiData$.pipe(
+            map((apiData) =>
+                apiData.courses.filter(
+                    (course) => course.id != apiData.currentCourse.id
+                )
+            )
+        );
     }
     // public getLearningLanguages(): Observable<IPathCourse[]> {
     //     return this.pathApiData$.pipe(map((apiData) => apiData.courses));
@@ -309,9 +288,16 @@ export class LanguageDataService {
 
     public switchLanguage(newLanguage: IPathCourse): Observable<void> {
         return this.http
-            .post(this.swicthLanguageUrl, {
-                learning_language: newLanguage.learningLanguage,
-            })
+            .patch(
+                `${this.urlPathApi}/${
+                    this.authService.getCurrentUser()?.user_id
+                }?fields=courses,currentCourse,fromLanguage,learningLanguage`,
+                {
+                    fromLanguage: newLanguage.fromLanguage,
+                    learningLanguage: newLanguage.learningLanguage,
+                    signal: null,
+                }
+            )
             .pipe(
                 map((resp) => {
                     console.log(resp);
