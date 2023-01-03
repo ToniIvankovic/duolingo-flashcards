@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { EMPTY, forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { GameMode } from '../enums/game-modes.enum';
-import { ISkill } from '../interfaces/api-data.interface';
+import { IPathUnit, ITreeSkill } from '../interfaces/api-data.interface';
 import {
     ICard,
     IRawWord,
@@ -32,7 +32,7 @@ export class CardsGameService {
         mode: GameMode,
         amount?: number,
         prefferNewer?: boolean,
-        skills?: ISkill[]
+        units?: IPathUnit[]
     ): Observable<ISession> {
         this.session = undefined;
         let words$: Observable<IRawWord[]>;
@@ -43,18 +43,18 @@ export class CardsGameService {
                 amount || 10
             );
         } else {
-            words$ = this.languageDataService.getWordsForSkills(skills || []);
+            words$ = this.languageDataService.getWordsForUnits(units || []);
         }
         this.session$ = words$.pipe(
-            switchMap((words) =>
-                this.languageDataService.findTranslations(words)
+            switchMap((words) =>{
+                return this.languageDataService.findTranslations(words)
+            }
             ),
             map((translatedWords) => {
                 let cards: ICard[] = translatedWords.map((word) => {
                     return new Card({ word });
                 });
                 this.session = { cards };
-                console.log(this.session);
                 return this.session;
             })
         );

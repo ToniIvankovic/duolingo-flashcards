@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs';
-import { ILanguage } from 'src/app/interfaces/api-data.interface';
+import { IPathCourse, ITreeLanguage } from 'src/app/interfaces/api-data.interface';
 import { LanguageDataService } from 'src/app/services/language-data.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { LanguageDataService } from 'src/app/services/language-data.service';
     styleUrls: ['./choose-language.component.scss'],
 })
 export class ChooseLanguageComponent implements OnInit {
-    public learningLanguages?: ILanguage[];
-    public currentLanguage?: ILanguage;
+    public learningLanguages?: IPathCourse[];
+    public currentLanguage?: IPathCourse;
     public loadingData: boolean = false;
     public switchingLanguage: boolean = false;
     public flagsLocations: { [key: string]: string } = {
@@ -81,7 +81,7 @@ export class ChooseLanguageComponent implements OnInit {
     }
 
     ngOnInit(): void {}
-    public onSwitchClick(language: ILanguage) {
+    public onSwitchClick(language: IPathCourse) {
         this.switchingLanguage = true;
         this.langDataService.switchLanguage(language).subscribe((_resp) => {
             location.reload();

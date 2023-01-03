@@ -19,14 +19,16 @@
             <div class="grid">
                 <div class="lessons">
                     <mat-checkbox
-                        *ngFor="let skill of filteredSkillsList!.reverse()"
+                        *ngFor="let unit of filteredSkillsList!.reverse()"
                         class="lesson"
                         color="primary"
-                        [id]="skill.name"
-                        [name]="skill.name"
-                        (change)="onChange($event, skill)"
-                        [checked]="chosenSkills.includes(skill)"
-                        >{{ skill.title }}</mat-checkbox
+                        [id]="unit.unitIndex.toString()"
+                        [name]="unit.unitIndex.toString()"
+                        (change)="onChange($event, unit)"
+                        [checked]="chosenSkills.includes(unit)"
+                        >{{
+                            "Unit " + unit.unitIndex + ": " + unit.teachingObjective
+                        }}</mat-checkbox
                     >
                 </div>
                 <div class="start-button-div">
@@ -43,7 +45,7 @@
                         Choose at least 1 skill to begin
                     </p>
                     <p *ngIf="chosenSkills.length != 0" class="hint-text">
-                        Number of chosen skills: {{chosenSkills.length}}
+                        Number of chosen skills: {{ chosenSkills.length }}
                     </p>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { combineLatestWith, map, Observable, tap } from 'rxjs';
 import { GameMode } from 'src/app/enums/game-modes.enum';
-import { ISkill } from 'src/app/interfaces/api-data.interface';
+import { IPathUnit, ITreeSkill } from 'src/app/interfaces/api-data.interface';
 import { CardsGameService } from 'src/app/services/cards-game.service';
 import { LanguageDataService } from 'src/app/services/language-data.service';
 
@@ -21,10 +21,10 @@ export class LessonsComponent implements OnInit {
     ) {}
 
     public currentLanguage$?: Observable<string>;
-    public skillsList$?: Observable<ISkill[]>;
-    public skillsList?: ISkill[];
-    public filteredSkillsList?: ISkill[];
-    public chosenSkills: ISkill[] = [];
+    public skillsList$?: Observable<IPathUnit[]>;
+    public skillsList?: IPathUnit[];
+    public filteredSkillsList?: IPathUnit[];
+    public chosenSkills: IPathUnit[] = [];
     public filterValue: string = '';
 
     public loading: boolean = false;
@@ -32,8 +32,8 @@ export class LessonsComponent implements OnInit {
         this.loading = true;
         this.currentLanguage$ = this.languageDataService
             .getCurrentLearningLanguage()
-            .pipe(map((language) => language.language_string));
-        this.skillsList$ = this.languageDataService.getSkillsList();
+            .pipe(map((language) => language.title));
+        this.skillsList$ = this.languageDataService.getEligibleUnitsList();
         this.skillsList$.subscribe((list) => {
             this.skillsList = list;
         });
@@ -45,7 +45,7 @@ export class LessonsComponent implements OnInit {
             });
     }
 
-    public onChange(change: MatCheckboxChange, skill: ISkill) {
+    public onChange(change: MatCheckboxChange, skill: IPathUnit) {
         if (change.checked) {
             this.chosenSkills.push(skill);
         } else {
@@ -59,13 +59,14 @@ export class LessonsComponent implements OnInit {
     public onFilterChange(event: string) {
         this.filterValue = event;
         this.filteredSkillsList = this.skillsList?.filter((skill) =>
-            skill.title.toLowerCase().includes(this.filterValue.toLowerCase())
+            skill.teachingObjective.toLowerCase().includes(this.filterValue.toLowerCase())
+            || skill.unitIndex.toString().includes(this.filterValue)
         );
     }
 
     public onStartClick(event: Event) {
         event.preventDefault();
-        console.log(this.chosenSkills.map((skill) => skill.title));
+        console.log(this.chosenSkills.map((skill) => skill.teachingObjective));
         this.cardsGameService.prepareSession(
             GameMode.CHOSEN_LESSONS,
             undefined,

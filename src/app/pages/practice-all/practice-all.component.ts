@@ -1,15 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { combineLatestWith, map, Observable, tap } from 'rxjs';
 import { GameMode } from 'src/app/enums/game-modes.enum';
-import {
-    IApiData,
-    ILanguage,
-    ILanguageData,
-    ISkill,
-} from 'src/app/interfaces/api-data.interface';
-import { AuthService } from 'src/app/services/auth.service';
 import { CardsGameService } from 'src/app/services/cards-game.service';
 import { LanguageDataService } from 'src/app/services/language-data.service';
 
@@ -35,10 +27,10 @@ export class PracticeAllComponent implements OnInit {
         this.loading = true;
         this.currentLanguage$ = this.languageDataService
             .getCurrentLearningLanguage()
-            .pipe(map((language) => language.language_string));
+            .pipe(map((language) => language.title));
         this.lastLesson$ = this.languageDataService
-            .getLastCompletedSkill()
-            .pipe(map((skill) => skill.title));
+            .getLastPathCompletedUnit()
+            .pipe(map((unit) => `Unit ${unit.unitIndex}: ${unit.teachingObjective}`));
         this.currentLanguage$
             .pipe(combineLatestWith(this.lastLesson$))
             .subscribe(() => (this.loading = false));
