@@ -1,15 +1,11 @@
 "use strict";
 const express = require("express");
-const compression = require("compression");
-const request = require("request");
-var proxy = require('express-http-proxy');
 var {createProxyMiddleware} = require('http-proxy-middleware');
 
-const _port = 3000;
+const _port = 80;
 const _app_folder = '.';
 
 const app = express();
-app.use(compression());
 
 app.use(
   '/api',
