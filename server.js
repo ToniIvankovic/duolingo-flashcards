@@ -1,7 +1,6 @@
 "use strict";
 const express = require("express");
 var { createProxyMiddleware } = require('http-proxy-middleware');
-const { stringify } = require("querystring");
 
 const _port = process.env.PORT || 80;
 const _app_folder = '.';
@@ -23,8 +22,9 @@ app.use(
 const key = process.env.private_key;
 const path = "/dist/duolingo-flashcards";
 // ---- SERVE STATIC FILES ---- //
+
 app.get("/key.json", (req, res) => {
-  res.status(200).send(JSON.stringify({key:key}));
+  res.status(200).send(JSON.stringify({ key: key }));
 });
 app.get('*.*', express.static(_app_folder + path, { maxAge: '1y' }));
 

@@ -19,7 +19,7 @@ export class TranslationService {
         return this.key.pipe(
             switchMap((key) => {
                 return this.http.post<TranslationResponse>(
-                    this.url + this.key,
+                    this.url + key,
                     obj
                 );
             })
