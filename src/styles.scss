@@ -190,3 +190,7 @@ $warn: mat-palette($warn-color-palette, 400);
     background: $background,
   )
 );
+
+.mat-checkbox-layout { white-space: normal !important; }
+.mat-checkbox-layout { white-space: normal !important; }
+.mat-checkbox-layout .mat-checkbox-label {line-height: 26px;}

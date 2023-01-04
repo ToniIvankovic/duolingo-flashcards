@@ -45,9 +45,10 @@ mat-checkbox{
 }
 @media screen and (max-width: 700px){
     .grid{
-        width: 80%;
+        width: 100%;
         display: block;
         margin-bottom: 200px;
+        min-width: unset;
     }
     .start-button-div{
         position: fixed;
@@ -59,5 +60,16 @@ mat-checkbox{
         border-top: 1px dashed v.$main_color_emphasized;
         box-sizing: border-box;
         width: 100vw;
+    }
+    .lesson{
+        margin: 0;
+        margin-block: 10px;
+        label > {
+            line-height: 24px;
+        }
+    }
+    .lessons{
+        width: 100%;
+        margin: 0;
     }
 }
