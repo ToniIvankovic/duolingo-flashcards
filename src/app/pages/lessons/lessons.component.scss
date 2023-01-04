@@ -11,6 +11,7 @@
 }
 .lesson{
     margin-inline: 2em;
+    margin-block: 5px;
 }
 form{
     display: block;
@@ -63,7 +64,6 @@ mat-checkbox{
     }
     .lesson{
         margin: 0;
-        margin-block: 10px;
         label > {
             line-height: 24px;
         }

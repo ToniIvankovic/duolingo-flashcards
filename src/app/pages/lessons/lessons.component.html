@@ -19,7 +19,7 @@
             <div class="grid">
                 <div class="lessons">
                     <mat-checkbox
-                        *ngFor="let unit of filteredSkillsList!.reverse()"
+                        *ngFor="let unit of filteredSkillsList!.slice().reverse()"
                         class="lesson"
                         color="primary"
                         [id]="unit.unitIndex.toString()"
