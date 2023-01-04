@@ -2,7 +2,7 @@
 const express = require("express");
 var {createProxyMiddleware} = require('http-proxy-middleware');
 
-const _port = 80;
+const _port =  process.env.PORT ||  80;
 const _app_folder = '.';
 
 const app = express();
