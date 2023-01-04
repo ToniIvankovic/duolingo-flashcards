@@ -47,6 +47,16 @@
                     <p *ngIf="chosenSkills.length != 0" class="hint-text">
                         Number of chosen skills: {{ chosenSkills.length }}
                     </p>
+                    <mat-checkbox
+                        class="lesson"
+                        color="primary"
+                        id="reverse"
+                        name="reverse"
+                        (change)="reversed=!reversed"
+                        [checked]="reversed"
+                        >{{
+                            "Reverse languages?"}}</mat-checkbox
+                    >
                 </div>
             </div>
         </form>

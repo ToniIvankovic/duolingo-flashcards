@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
     combineLatest,
+    filter,
     flatMap,
     forkJoin,
     map,
@@ -232,7 +233,20 @@ export class LanguageDataService {
         let wordsFromUnits$ = units.map((unit) => this.getWordsForUnit(unit));
         return combineLatest(wordsFromUnits$).pipe(
             take(1),
-            map((words) => words.flat())
+            map((words) => {
+                //flatten the words array and remove duplicate values
+                const wordsSet = new Array<IRawWord>();
+                const addedWords = new Array<string>();
+                words.forEach((unitWords) => {
+                    unitWords.forEach((word) => {
+                        if (!addedWords.includes(word.word)) {
+                            wordsSet.push(word);
+                            addedWords.push(word.word);
+                        }
+                    })
+                });
+                return Array.from(wordsSet);
+            })
         );
     }
 

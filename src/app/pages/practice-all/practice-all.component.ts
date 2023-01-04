@@ -21,6 +21,7 @@ export class PracticeAllComponent implements OnInit {
     public lastLesson$?: Observable<string>;
     public amount: number | null = 20;
     public prefferNew: boolean = false;
+    public reversed: boolean = false;
 
     public loading: boolean = false;
     ngOnInit(): void {
@@ -42,7 +43,9 @@ export class PracticeAllComponent implements OnInit {
         this.cardsGameService.prepareSession(
             GameMode.PRACTICE_ALL,
             this.amount,
-            this.prefferNew
+            this.prefferNew,
+            undefined,
+            this.reversed
         );
         this.router.navigateByUrl('/game');
     }

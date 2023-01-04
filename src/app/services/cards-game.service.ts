@@ -32,7 +32,8 @@ export class CardsGameService {
         mode: GameMode,
         amount?: number,
         prefferNewer?: boolean,
-        units?: IPathUnit[]
+        units?: IPathUnit[],
+        reversed?: boolean,
     ): Observable<ISession> {
         this.session = undefined;
         let words$: Observable<IRawWord[]>;
@@ -51,6 +52,14 @@ export class CardsGameService {
             }
             ),
             map((translatedWords) => {
+                if(reversed === true){
+                    translatedWords = translatedWords.map((word) => {
+                        const temp = word.translations[0];
+                        word.translations = [word.word];
+                        word.word = temp;
+                        return word;
+                    });
+                }
                 let cards: ICard[] = translatedWords.map((word) => {
                     return new Card({ word });
                 });

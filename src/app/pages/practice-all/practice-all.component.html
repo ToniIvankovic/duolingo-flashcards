@@ -12,12 +12,22 @@
 
         <form>
             <mat-checkbox
+                class="checkbox"
                 color="primary"
                 id="newerPref"
                 name="newerPref"
                 [checked]="prefferNew"
                 [(ngModel)]="prefferNew"
                 >Preffer newer lessons?</mat-checkbox
+            >
+            <mat-checkbox
+                class="checkbox"
+                color="primary"
+                id="reverse"
+                name="reverse"
+                (change)="reversed = !reversed"
+                [checked]="reversed"
+                >{{ "Reverse languages?" }}</mat-checkbox
             >
             <div class="amountDiv">
                 <p>Amount of words:</p>

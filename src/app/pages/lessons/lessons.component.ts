@@ -26,6 +26,7 @@ export class LessonsComponent implements OnInit {
     public filteredSkillsList?: IPathUnit[];
     public chosenSkills: IPathUnit[] = [];
     public filterValue: string = '';
+    public reversed: boolean = false;
 
     public loading: boolean = false;
     ngOnInit(): void {
@@ -71,7 +72,8 @@ export class LessonsComponent implements OnInit {
             GameMode.CHOSEN_LESSONS,
             undefined,
             undefined,
-            this.chosenSkills
+            this.chosenSkills,
+            this.reversed
         );
         this.router.navigateByUrl('/game');
     }
