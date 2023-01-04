@@ -11,7 +11,7 @@ export class TranslationService {
     url = 'https://translation.googleapis.com/language/translate/v2?key=';
     private key: Observable<string> = this.http
         .get('key.json')
-        .pipe(map((res: any) => res.key));
+        .pipe(map((res: any) => JSON.parse(res.key)));
 
     constructor(private http: HttpClient) {}
 
