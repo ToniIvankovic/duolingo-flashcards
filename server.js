@@ -24,7 +24,7 @@ const key = process.env.private_key;
 const path = "/dist/duolingo-flashcards";
 // ---- SERVE STATIC FILES ---- //
 app.get("/key.json", (req, res) => {
-  res.status(200).send(stringify({key:key}));
+  res.status(200).send(JSON.stringify({key:key}));
 });
 app.get('*.*', express.static(_app_folder + path, { maxAge: '1y' }));
 
