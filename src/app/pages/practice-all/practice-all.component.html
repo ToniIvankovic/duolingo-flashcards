@@ -2,11 +2,11 @@
     <p class="title">Practice all skills</p>
     <app-loader *ngIf="loading"></app-loader>
     <ng-container *ngIf="!loading">
-        <p>Language:</p>
+        <p class="subtitle">Language:</p>
         <p class="largerText">{{ currentLanguage$ | async }}</p>
         <br />
 
-        <p>Last lesson:</p>
+        <p class="subtitle">Last lesson:</p>
         <p class="largerText">{{ lastLesson$ | async }}</p>
         <br />
 
